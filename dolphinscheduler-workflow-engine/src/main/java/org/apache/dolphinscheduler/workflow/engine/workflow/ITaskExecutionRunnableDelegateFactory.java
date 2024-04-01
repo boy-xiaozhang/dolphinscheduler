@@ -17,18 +17,17 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
 
-public interface IEventfulExecutionRunnable {
+public interface ITaskExecutionRunnableDelegateFactory {
 
-    IEventRepository getEventRepository();
+    ITaskExecutionRunnableDelegate createTaskExecutionRunnable(ITaskIdentify taskIdentify,
+                                                               IWorkflowExecutionContext workflowExecutionContext);
 
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
-    }
+    ITaskExecutionRunnableDelegate createFailoverTaskExecutionRunnable(ITaskExecutionRunnable taskExecutionRunnable,
+                                                                       IWorkflowExecutionContext workflowExecutionContext);
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
-    }
+    ITaskExecutionRunnableDelegate createRetryTaskExecutionRunnable(ITaskExecutionRunnable taskExecutionRunnable,
+                                                                    IWorkflowExecutionContext workflowExecutionContext);
+
 }

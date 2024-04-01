@@ -26,12 +26,12 @@ public class SingletonWorkflowExecuteRunnableRepositoryAssertions {
 
     public static void existWorkflowExecutionRunnable(Integer workflowInstanceId) {
         assertNotNull(SingletonWorkflowExecutionRunnableRepository.getInstance()
-                .getWorkflowExecutionRunnableById(workflowInstanceId));
+                .getWorkflowExecutionRunnable(workflowInstanceId));
     }
 
     public static void notExistWorkflowExecutionRunnable(Integer workflowInstanceId) {
         assertNull(SingletonWorkflowExecutionRunnableRepository.getInstance()
-                .getWorkflowExecutionRunnableById(workflowInstanceId));
+                .getWorkflowExecutionRunnable(workflowInstanceId));
     }
 
 }

@@ -17,105 +17,108 @@
 
 package org.apache.dolphinscheduler.workflow.engine.dag;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * The IWorkflowDAG represent the DAG of a workflow.
  */
-public class WorkflowDAG implements DAG {
+public class WorkflowDAG implements DAG<ITask, ITaskIdentify> {
 
-    private final Map<NodeIdentify, Node> dagNodeMap;
+    private final Map<ITaskIdentify, ITask> dagNodeMap;
 
-    private final Map<NodeIdentify, List<Node>> outdegreeMap;
+    private final Map<ITaskIdentify, Set<ITaskIdentify>> outdegreeMap;
 
-    private final Map<NodeIdentify, List<Node>> inDegredMap;
+    private final Map<ITaskIdentify, Set<ITaskIdentify>> inDegredMap;
 
-    public WorkflowDAG(List<Node> nodes, List<Edge> edges) {
-        this.dagNodeMap = nodes.stream().collect(Collectors.toMap(Node::getNodeIdentify, Function.identity()));
+    public WorkflowDAG(List<ITask> tasks,
+                       List<ITaskChain> taskChains) {
+        this.dagNodeMap = new HashMap<>();
         this.outdegreeMap = new HashMap<>();
         this.inDegredMap = new HashMap<>();
-        // todo:
-    }
 
-    @Override
-    public List<Node> getDirectPostNodes(Node dagNode) {
-        NodeIdentify nodeIdentify = dagNode.getNodeIdentify();
-        if (!dagNodeMap.containsKey(nodeIdentify)) {
-            return Collections.emptyList();
-        }
-        Node node = dagNodeMap.get(nodeIdentify);
-        List<Node> nodes = new ArrayList<>();
-        for (DAGEdge edge : node.getOutDegrees()) {
-            if (dagNodeMap.containsKey(edge.getToNodeName())) {
-                nodes.add(dagNodeMap.get(edge.getToNodeName()));
+        for (ITask task : tasks) {
+            ITaskIdentify identify = task.getIdentify();
+            if (dagNodeMap.containsKey(identify)) {
+                throw new IllegalArgumentException("Duplicate task identify: " + identify);
             }
+            dagNodeMap.put(identify, task);
         }
-        return nodes;
+        for (ITaskChain taskChain : taskChains) {
+            ITask from = taskChain.getFrom();
+            ITask to = taskChain.getTo();
+            if (from == null) {
+                continue;
+            }
+            if (to == null) {
+                continue;
+            }
+            ITaskIdentify fromIdentify = from.getIdentify();
+            ITaskIdentify toIdentify = to.getIdentify();
+            Set<ITaskIdentify> outDegrees = outdegreeMap.computeIfAbsent(fromIdentify, k -> new HashSet<>());
+            if (outDegrees.contains(toIdentify)) {
+                throw new IllegalArgumentException("Duplicate task chain: " + fromIdentify + " -> " + toIdentify);
+            }
+            outDegrees.add(toIdentify);
+            Set<ITaskIdentify> inDegrees = inDegredMap.computeIfAbsent(toIdentify, k -> new HashSet<>());
+            if (inDegrees.contains(fromIdentify)) {
+                throw new IllegalArgumentException("Duplicate task chain: " + fromIdentify + " -> " + toIdentify);
+            }
+            inDegrees.add(fromIdentify);
+        }
     }
 
     @Override
-    public List<Node> getDirectPostNodes(String dagNodeName) {
-        Node node = getDAGNode(dagNodeName);
-        if (dagNodeName != null && node == null) {
-            throw new IllegalArgumentException("Cannot find the Node: " + dagNodeName + " in DAG");
+    public List<ITask> getDirectPostNodes(ITask iTask) {
+        if (iTask == null) {
+            return getDirectPostNodesByIdentify(null);
         }
-        return getDirectPostNodes(node);
+        return getDirectPostNodesByIdentify(iTask.getIdentify());
     }
 
     @Override
-    public List<String> getDirectPostNodeNames(String dagNodeName) {
-        Node node = getDAGNode(dagNodeName);
-        if (dagNodeName != null && node == null) {
-            throw new IllegalArgumentException("Cannot find the Node: " + dagNodeName + " in DAG");
+    public List<ITask> getDirectPostNodesByIdentify(ITaskIdentify taskIdentify) {
+        if (taskIdentify == null) {
+            return dagNodeMap.values()
+                    .stream()
+                    .filter(task -> !inDegredMap.containsKey(task.getIdentify()))
+                    .collect(Collectors.toList());
         }
-        return getDirectPostNodes(node).stream()
-                .map(Node::getNodeName)
+        return outdegreeMap.getOrDefault(taskIdentify, Collections.emptySet())
+                .stream()
+                .map(dagNodeMap::get)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Node> getDirectPreNodes(Node dagNode) {
-        final String nodeName = dagNode.getNodeName();
-        if (!dagNodeMap.containsKey(nodeName)) {
-            return Collections.emptyList();
+    public List<ITask> getDirectPreNodes(ITask iTask) {
+        if (iTask == null) {
+            return getDirectPreNodesByIdentify(null);
         }
-        Node node = dagNodeMap.get(nodeName);
-        List<Node> nodes = new ArrayList<>();
-        for (DAGEdge edge : node.getInDegrees()) {
-            if (dagNodeMap.containsKey(edge.getFromNodeName())) {
-                nodes.add(dagNodeMap.get(edge.getFromNodeName()));
-            }
-        }
-        return nodes;
+        return getDirectPreNodesByIdentify(iTask.getIdentify());
     }
 
     @Override
-    public List<Node> getDirectPreNodes(String dagNodeName) {
-        Node node = getDAGNode(dagNodeName);
-        if (dagNodeName != null && node == null) {
-            throw new IllegalArgumentException("Cannot find the Node: " + dagNodeName + " in DAG");
+    public List<ITask> getDirectPreNodesByIdentify(ITaskIdentify taskIdentify) {
+        if (taskIdentify == null) {
+            return dagNodeMap.values()
+                    .stream()
+                    .filter(task -> !outdegreeMap.containsKey(taskIdentify))
+                    .collect(Collectors.toList());
         }
-        return getDirectPreNodes(node);
+        return inDegredMap.getOrDefault(taskIdentify, Collections.emptySet())
+                .stream()
+                .map(dagNodeMap::get)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<String> getDirectPreNodeNames(String dagNodeName) {
-        Node node = getDAGNode(dagNodeName);
-        if (dagNodeName != null && node == null) {
-            throw new IllegalArgumentException("Cannot find the Node: " + dagNodeName + " in DAG");
-        }
-        return getDirectPreNodes(node).stream().map(Node::getNodeName).collect(Collectors.toList());
+    public ITask getDAGNode(ITaskIdentify taskIdentify) {
+        return dagNodeMap.get(taskIdentify);
     }
-
-    @Override
-    public Node getDAGNode(String nodeName) {
-        return dagNodeMap.get(nodeName);
-    }
-
 }

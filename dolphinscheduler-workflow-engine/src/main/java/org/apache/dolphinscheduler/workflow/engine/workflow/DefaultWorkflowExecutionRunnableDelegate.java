@@ -17,10 +17,35 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-public interface IWorkflowInstance {
+public class DefaultWorkflowExecutionRunnableDelegate implements IWorkflowExecutionRunnableDelegate {
 
-    int getId();
+    @Override
+    public void beforeStart() {
 
-    String getName();
+    }
 
+    @Override
+    public void afterStart() {
+
+    }
+
+    @Override
+    public void beforePause() {
+
+    }
+
+    @Override
+    public void afterPause() {
+
+    }
+
+    @Override
+    public void beforeKill() {
+
+    }
+
+    @Override
+    public void afterKill() {
+
+    }
 }

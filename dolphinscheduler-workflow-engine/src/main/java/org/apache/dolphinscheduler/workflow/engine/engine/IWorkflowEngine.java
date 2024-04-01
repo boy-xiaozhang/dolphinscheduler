@@ -19,6 +19,7 @@ package org.apache.dolphinscheduler.workflow.engine.engine;
 
 import org.apache.dolphinscheduler.workflow.engine.exception.WorkflowExecuteRunnableNotFoundException;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnable;
+import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableIdentify;
 
 /**
  * The WorkflowEngine is responsible for starting, stopping, pausing, and finalizing {@link IWorkflowExecutionRunnable}.
@@ -41,25 +42,25 @@ public interface IWorkflowEngine {
     /**
      * Pause a workflow instance.
      *
-     * @param workflowInstanceId the ID of the workflow to pause
+     * @param workflowExecutionRunnableIdentify the ID of the workflow to pause
      * @throws WorkflowExecuteRunnableNotFoundException if the workflow is not found
      */
-    void pauseWorkflow(Integer workflowInstanceId);
+    void pauseWorkflow(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify);
 
     /**
      * Kill a workflow instance.
      *
-     * @param workflowInstanceId the ID of the workflow to stop
+     * @param workflowExecutionRunnableIdentify the ID of the workflow to stop
      * @throws WorkflowExecuteRunnableNotFoundException if the workflow is not found
      */
-    void killWorkflow(Integer workflowInstanceId);
+    void killWorkflow(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify);
 
     /**
      * Finalize a workflow instance. Once a workflow has been finalized, then it cannot receive new operation, and will be removed from memory.
      *
-     * @param workflowInstanceId the ID of the workflow to finalize
+     * @param workflowExecutionRunnableIdentify the ID of the workflow to finalize
      */
-    void finalizeWorkflow(Integer workflowInstanceId);
+    void finalizeWorkflow(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify);
 
     /**
      * Shutdown the workflow engine. The workflow engine cannot be restarted after shutdown. This method will block until the workflow engine is completely shutdown.

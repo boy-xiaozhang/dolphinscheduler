@@ -17,15 +17,15 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.engine.IDAGEngine;
-
 /**
  * The IWorkflowExecuteRunnable represent a running workflow instance, it is responsible for operate the workflow instance. e.g. start, kill, pause.
  */
 public interface IWorkflowExecutionRunnable extends IEventfulExecutionRunnable {
 
+    IWorkflowExecutionRunnableIdentify getIdentity();
+
     /**
-     * Start the workflow instance.
+     * Start the workflow instance, this method will trigger the start task.
      */
     void start();
 
@@ -45,12 +45,5 @@ public interface IWorkflowExecutionRunnable extends IEventfulExecutionRunnable {
      * @return the workflow execution context
      */
     IWorkflowExecutionContext getWorkflowExecutionContext();
-
-    /**
-     * Get the {@link IDAGEngine} which used to execute the dag of the workflow instance.
-     *
-     * @return dag engine.
-     */
-    IDAGEngine getDagEngine();
 
 }

@@ -22,6 +22,7 @@ import org.apache.dolphinscheduler.common.thread.BaseDaemonThread;
 import org.apache.dolphinscheduler.common.thread.ThreadUtils;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionContext;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnable;
+import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableIdentify;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableRepository;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -83,24 +84,22 @@ public class EventEngine extends BaseDaemonThread implements IEventEngine {
         for (IWorkflowExecutionRunnable workflowExecutionRunnable : workflowExecutionRunnableList) {
             IWorkflowExecutionContext workflowExecutionContext =
                     workflowExecutionRunnable.getWorkflowExecutionContext();
-            final Integer workflowInstanceId = workflowExecutionContext.getWorkflowInstanceId();
-            final String workflowInstanceName = workflowExecutionContext.getWorkflowInstanceName();
+            IWorkflowExecutionRunnableIdentify identify = workflowExecutionContext.getIdentify();
             try {
-                MDC.put(Constants.WORKFLOW_INSTANCE_ID_MDC_KEY, String.valueOf(workflowInstanceId));
-                if (workflowExecutionRunnable.isEventFiring()) {
-                    log.debug("WorkflowExecutionRunnable: {} is already in firing", workflowInstanceName);
-                    continue;
-                }
+                MDC.put(Constants.WORKFLOW_INSTANCE_ID_MDC_KEY, String.valueOf(identify.getId()));
+                // if (workflowExecutionRunnable.isEventFiring()) {
+                // log.debug("WorkflowExecutionRunnable: {} is already in firing", identify);
+                // continue;
+                // }
                 eventFirer.fireActiveEvents(workflowExecutionRunnable)
                         .whenComplete((fireCount, ex) -> {
-                            workflowExecutionRunnable.setEventFiring(false);
+                            // workflowExecutionRunnable.setEventFiring(false);
                             if (ex != null) {
-                                log.error("Fire event for WorkflowExecutionRunnable: {} error", workflowInstanceName,
-                                        ex);
+                                log.error("Fire event for WorkflowExecutionRunnable: {} error", identify, ex);
                             } else {
                                 if (fireCount > 0) {
                                     log.info("Fire {} events for WorkflowExecutionRunnable: {} success", fireCount,
-                                            workflowInstanceName);
+                                            identify);
                                 }
                             }
                         });

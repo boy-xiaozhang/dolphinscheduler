@@ -17,6 +17,7 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
+import org.apache.dolphinscheduler.workflow.engine.dag.WorkflowDAG;
 import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
 
 import lombok.AllArgsConstructor;
@@ -30,10 +31,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WorkflowExecutionContext implements IWorkflowExecutionContext {
 
-    private IWorkflowInstance workflowInstance;
+    @Override
+    public IWorkflowExecutionRunnableIdentify getIdentify() {
+        return null;
+    }
 
-    private IWorkflowExecutionDAG workflowExecutionDAG;
+    @Override
+    public WorkflowDAG getWorkflowDAG() {
+        return null;
+    }
 
-    private IEventRepository eventRepository;
+    @Override
+    public WorkflowExecutionDAG getWorkflowExecutionDAG() {
+        return null;
+    }
 
+    @Override
+    public IEventRepository getEventRepository() {
+        return null;
+    }
 }

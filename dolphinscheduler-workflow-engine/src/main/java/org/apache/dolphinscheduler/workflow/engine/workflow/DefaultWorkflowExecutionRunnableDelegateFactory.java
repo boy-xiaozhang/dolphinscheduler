@@ -17,18 +17,20 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public class DefaultWorkflowExecutionRunnableDelegateFactory implements IWorkflowExecutionRunnableDelegateFactory {
 
-public interface IEventfulExecutionRunnable {
+    private static final DefaultWorkflowExecutionRunnableDelegateFactory INSTANCE =
+            new DefaultWorkflowExecutionRunnableDelegateFactory();
 
-    IEventRepository getEventRepository();
-
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
+    private DefaultWorkflowExecutionRunnableDelegateFactory() {
     }
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
+    public static DefaultWorkflowExecutionRunnableDelegateFactory getInstance() {
+        return INSTANCE;
+    }
+
+    @Override
+    public IWorkflowExecutionRunnableDelegate createWorkflowExecutionRunnableDelegate(IWorkflowExecutionContext workflowExecutionContext) {
+        return new DefaultWorkflowExecutionRunnableDelegate();
     }
 }

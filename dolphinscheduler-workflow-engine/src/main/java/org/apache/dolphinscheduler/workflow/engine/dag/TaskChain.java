@@ -15,20 +15,29 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.workflow;
+package org.apache.dolphinscheduler.workflow.engine.dag;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public class TaskChain implements ITaskChain {
 
-public interface IEventfulExecutionRunnable {
+    private final Task from;
 
-    IEventRepository getEventRepository();
+    private final Task to;
 
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
+    public TaskChain(Task from, Task to) {
+        if (from == null && to == null) {
+            throw new IllegalArgumentException("from and to can not be null at the same time");
+        }
+        this.from = from;
+        this.to = to;
     }
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
+    @Override
+    public Task getFrom() {
+        return from;
+    }
+
+    @Override
+    public Task getTo() {
+        return to;
     }
 }

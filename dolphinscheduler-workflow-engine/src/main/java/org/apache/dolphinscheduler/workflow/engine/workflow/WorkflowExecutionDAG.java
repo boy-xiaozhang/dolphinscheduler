@@ -17,93 +17,114 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.dag.Node;
-import org.apache.dolphinscheduler.workflow.engine.dag.WorkflowDAG;
+import org.apache.dolphinscheduler.workflow.engine.dag.DAG;
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+public class WorkflowExecutionDAG implements DAG<ITaskExecutionPlan, ITaskIdentify> {
 
-/**
- * The WorkflowExecutionDAG represent a running workflow instance DAG.
- */
-@Slf4j
-public class WorkflowExecutionDAG implements IWorkflowExecutionDAG {
+    private final Map<ITaskIdentify, ITaskExecutionPlan> taskExecutionPlanMap;
 
-    private final ITaskExecutionRunnableRepository taskExecutionRunnableRepository;
+    private final Map<ITaskIdentify, List<ITaskIdentify>> outdegreeMap;
 
-    private final WorkflowDAG workflowDAG;
+    private final Map<ITaskIdentify, List<ITaskIdentify>> inDegredMap;
 
-    @Getter
-    private final List<String> startNodeNames;
+    public WorkflowExecutionDAG(List<ITaskExecutionPlan> tasks,
+                                List<ITaskExecutionPlanChain> taskChains) {
+        this.taskExecutionPlanMap = new HashMap<>();
+        this.outdegreeMap = new HashMap<>();
+        this.inDegredMap = new HashMap<>();
 
-    public WorkflowExecutionDAG(ITaskExecutionRunnableRepository taskExecutionRunnableRepository,
-                                WorkflowDAG workflowDAG) {
-        this(taskExecutionRunnableRepository, workflowDAG, Collections.emptyList());
-    }
-
-    public WorkflowExecutionDAG(ITaskExecutionRunnableRepository taskExecutionRunnableRepository,
-                                WorkflowDAG workflowDAG,
-                                List<String> startNodeNames) {
-        this.taskExecutionRunnableRepository = taskExecutionRunnableRepository;
-        this.workflowDAG = workflowDAG;
-        this.startNodeNames = startNodeNames;
+        for (ITaskExecutionPlan task : tasks) {
+            ITaskIdentify identify = task.getTaskIdentify();
+            if (taskExecutionPlanMap.containsKey(identify)) {
+                throw new IllegalArgumentException("Duplicate task identify: " + identify);
+            }
+            taskExecutionPlanMap.put(identify, task);
+        }
+        for (ITaskExecutionPlanChain taskChain : taskChains) {
+            ITaskExecutionPlan from = taskChain.getFrom();
+            ITaskExecutionPlan to = taskChain.getTo();
+            if (from == null) {
+                continue;
+            }
+            if (to == null) {
+                continue;
+            }
+            ITaskIdentify fromIdentify = from.getTaskIdentify();
+            ITaskIdentify toIdentify = to.getTaskIdentify();
+            List<ITaskIdentify> outDegrees =
+                    outdegreeMap.computeIfAbsent(fromIdentify, k -> new ArrayList<>());
+            if (outDegrees.contains(toIdentify)) {
+                throw new IllegalArgumentException("Duplicate task chain: " + fromIdentify + " -> " + toIdentify);
+            }
+            outDegrees.add(toIdentify);
+            List<ITaskIdentify> inDegrees =
+                    inDegredMap.computeIfAbsent(toIdentify, k -> new ArrayList<>());
+            if (inDegrees.contains(fromIdentify)) {
+                throw new IllegalArgumentException("Duplicate task chain: " + fromIdentify + " -> " + toIdentify);
+            }
+            inDegrees.add(fromIdentify);
+        }
     }
 
     @Override
-    public ITaskExecutionRunnable getTaskExecutionRunnableById(Integer taskInstanceId) {
-        return taskExecutionRunnableRepository.getTaskExecutionRunnableById(taskInstanceId);
+    public List<ITaskExecutionPlan> getDirectPostNodes(ITaskExecutionPlan taskExecutionPlan) {
+        if (taskExecutionPlan == null) {
+            return getDirectPostNodesByIdentify(null);
+        }
+        return getDirectPostNodesByIdentify(taskExecutionPlan.getTaskIdentify());
     }
 
     @Override
-    public ITaskExecutionRunnable getTaskExecutionRunnableByName(String taskName) {
-        return taskExecutionRunnableRepository.getTaskExecutionRunnableByName(taskName);
-    }
-
-    @Override
-    public List<ITaskExecutionRunnable> getActiveTaskExecutionRunnable() {
-        return new ArrayList<>(taskExecutionRunnableRepository.getActiveTaskExecutionRunnable());
-    }
-
-    @Override
-    public List<ITaskExecutionRunnable> getDirectPreTaskExecutionRunnable(String taskName) {
-        return getDirectPreNodeNames(taskName)
+    public List<ITaskExecutionPlan> getDirectPostNodesByIdentify(ITaskIdentify taskIdentify) {
+        if (taskIdentify == null) {
+            return taskExecutionPlanMap.values()
+                    .stream()
+                    .filter(task -> !inDegredMap.containsKey(task.getTaskIdentify()))
+                    .collect(Collectors.toList());
+        }
+        return inDegredMap.getOrDefault(taskIdentify, Collections.emptyList())
                 .stream()
-                .map(taskExecutionRunnableRepository::getTaskExecutionRunnableByName)
+                .map(taskExecutionPlanMap::get)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public boolean isTaskAbleToBeTriggered(String taskNodeName) {
-        // todo: Check whether the workflow instance is finished or ready to finish.
-        List<Node> directPreNodes = getDirectPreNodes(taskNodeName);
-        if (log.isDebugEnabled()) {
-            log.debug("Begin to check whether the task {} is able to be triggered.", taskNodeName);
-            log.debug("Task {} directly dependent on the task: {}.", taskNodeName,
-                    directPreNodes.stream().map(Node::getNodeName).collect(Collectors.toList()));
+    public List<ITaskExecutionPlan> getDirectPreNodes(ITaskExecutionPlan iTaskExecutionPlan) {
+        if (iTaskExecutionPlan == null) {
+            return getDirectPreNodesByIdentify(null);
         }
-        for (Node directPreNode : directPreNodes) {
-            if (directPreNode.isSkip()) {
-                log.debug("The task {} is skipped.", directPreNode.getNodeName());
-                continue;
-            }
-            ITaskExecutionRunnable taskExecutionRunnable = getTaskExecutionRunnableByName(directPreNode.getNodeName());
-            if (taskExecutionRunnable == null || taskExecutionRunnable.isReadyToTrigger(taskNodeName)) {
-                log.debug("The task {} is not finished or not able to access to the task {}.",
-                        directPreNode.getNodeName(), taskNodeName);
-            }
-        }
-        return true;
+        return getDirectPreNodesByIdentify(iTaskExecutionPlan.getTaskIdentify());
     }
 
     @Override
-    public void storeTaskExecutionRunnable(ITaskExecutionRunnable taskExecutionRunnable) {
-        taskExecutionRunnableRepository.storeTaskExecutionRunnable(taskExecutionRunnable);
+    public List<ITaskExecutionPlan> getDirectPreNodesByIdentify(ITaskIdentify taskIdentify) {
+        if (taskIdentify == null) {
+            return taskExecutionPlanMap.values()
+                    .stream()
+                    .filter(task -> !outdegreeMap.containsKey(task.getTaskIdentify()))
+                    .collect(Collectors.toList());
+        }
+        return outdegreeMap.getOrDefault(taskIdentify, Collections.emptyList())
+                .stream()
+                .map(taskExecutionPlanMap::get)
+                .collect(Collectors.toList());
     }
 
+    public List<ITaskExecutionPlan> getActiveTaskExecutionPlan() {
+        return null;
+    }
+
+    @Override
+    public ITaskExecutionPlan getDAGNode(ITaskIdentify taskIdentify) {
+        return taskExecutionPlanMap.get(taskIdentify);
+    }
 
 }

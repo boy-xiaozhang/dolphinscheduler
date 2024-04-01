@@ -20,17 +20,12 @@ package org.apache.dolphinscheduler.workflow.engine.workflow;
 /**
  * The TaskExecutionRunnable represent the running task, it is responsible for operate the task instance. e.g. dispatch, kill, pause.
  */
-public interface ITaskExecutionRunnable {
+public interface ITaskExecutionRunnable extends IEventfulExecutionRunnable {
 
     /**
-     * Dispatch the task instance.
+     * Start the task instance.
      */
-    void dispatch();
-
-    /**
-     * Run the task instance.
-     */
-    void run();
+    void start();
 
     /**
      * Kill the task instance.
@@ -41,6 +36,13 @@ public interface ITaskExecutionRunnable {
      * Pause the task instance.
      */
     void pause();
+
+    /**
+     * Get the task execution identify.
+     *
+     * @return the task execution identify
+     */
+    ITaskExecutionRunnableIdentify getIdentify();
 
     /**
      * Get the task execution context.
@@ -56,4 +58,5 @@ public interface ITaskExecutionRunnable {
      * @return true if the current task can be accessed to the post task.
      */
     boolean isReadyToTrigger(String taskNodeName);
+
 }

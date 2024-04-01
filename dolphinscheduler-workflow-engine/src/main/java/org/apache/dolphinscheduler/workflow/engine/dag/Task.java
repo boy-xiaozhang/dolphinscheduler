@@ -15,20 +15,26 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.workflow;
+package org.apache.dolphinscheduler.workflow.engine.dag;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public class Task implements ITask {
 
-public interface IEventfulExecutionRunnable {
+    private final TaskIdentify taskIdentify;
 
-    IEventRepository getEventRepository();
+    private final TaskContext taskContext;
 
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
+    public Task(TaskIdentify taskIdentify, TaskContext taskContext) {
+        this.taskIdentify = taskIdentify;
+        this.taskContext = taskContext;
     }
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
+    @Override
+    public TaskIdentify getIdentify() {
+        return taskIdentify;
+    }
+
+    @Override
+    public TaskContext getContext() {
+        return taskContext;
     }
 }

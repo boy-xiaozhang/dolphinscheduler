@@ -24,25 +24,7 @@ import java.util.List;
 /**
  * The WorkflowExecutionDAG represent the running workflow DAG.
  */
-public interface IWorkflowExecutionDAG {
-
-    List<String> getStartNodeNames();
-
-    /**
-     * Get TaskExecutionRunnable by given TaskInstanceId.
-     *
-     * @param taskInstanceId taskInstanceId.
-     * @return TaskExecutionRunnable
-     */
-    ITaskExecutionRunnable getTaskExecutionRunnableById(Integer taskInstanceId);
-
-    /**
-     * Get TaskExecutionRunnable by given taskName.
-     *
-     * @param taskName task name.
-     * @return TaskExecutionRunnable
-     */
-    ITaskExecutionRunnable getTaskExecutionRunnableByName(String taskName);
+public interface IWorkflowExecutionDAG extends DAG<ITaskExecutionRunnable, ITaskExecutionRunnableIdentify> {
 
     /**
      * Get TaskExecutionRunnable which is not finished.
@@ -51,21 +33,4 @@ public interface IWorkflowExecutionDAG {
      */
     List<ITaskExecutionRunnable> getActiveTaskExecutionRunnable();
 
-    /**
-     * Get the direct pre TaskExecutionRunnable of the given taskName.
-     *
-     * @param taskName task name.
-     * @return TaskExecutionRunnable
-     */
-    List<ITaskExecutionRunnable> getDirectPreTaskExecutionRunnable(String taskName);
-
-    /**
-     * Check whether the taskNode is ready to run.
-     *
-     * @param taskName taskNodeName
-     * @return true if the taskNode is ready to run.
-     */
-    boolean isTaskAbleToBeTriggered(String taskName);
-
-    void storeTaskExecutionRunnable(ITaskExecutionRunnable taskExecutionRunnable);
 }

@@ -17,18 +17,10 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public interface ITaskExecutionPlanChain {
 
-public interface IEventfulExecutionRunnable {
+    ITaskExecutionPlan getFrom();
 
-    IEventRepository getEventRepository();
+    ITaskExecutionPlan getTo();
 
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
-    }
-
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
-    }
 }

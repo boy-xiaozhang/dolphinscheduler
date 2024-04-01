@@ -10,21 +10,21 @@ class WorkflowOperationEventTest {
     void triggerEvent() {
         WorkflowOperationEvent workflowOperationEvent = WorkflowOperationEvent.triggerEvent(1);
         assertEquals(1, workflowOperationEvent.getWorkflowInstanceId());
-        assertEquals(WorkflowOperationType.TRIGGER, workflowOperationEvent.getWorkflowOperationType());
+        assertEquals(WorkflowOperationEventType.TRIGGER, workflowOperationEvent.getWorkflowOperationType());
     }
 
     @Test
     void pauseEvent() {
         WorkflowOperationEvent workflowOperationEvent = WorkflowOperationEvent.pauseEvent(1);
         assertEquals(1, workflowOperationEvent.getWorkflowInstanceId());
-        assertEquals(WorkflowOperationType.PAUSE, workflowOperationEvent.getWorkflowOperationType());
+        assertEquals(WorkflowOperationEventType.PAUSE, workflowOperationEvent.getWorkflowOperationType());
     }
 
     @Test
     void killEvent() {
         WorkflowOperationEvent workflowOperationEvent = WorkflowOperationEvent.killEvent(1);
         assertEquals(1, workflowOperationEvent.getWorkflowInstanceId());
-        assertEquals(WorkflowOperationType.KILL, workflowOperationEvent.getWorkflowOperationType());
+        assertEquals(WorkflowOperationEventType.KILL, workflowOperationEvent.getWorkflowOperationType());
     }
 
 }

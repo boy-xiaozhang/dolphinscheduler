@@ -15,5 +15,12 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.workflow;public interface IChain {
+package org.apache.dolphinscheduler.workflow.engine.workflow;
+
+public interface IWorkflowExecutionRunnableIdentify {
+
+    Long getId();
+
+    String getName();
+
 }

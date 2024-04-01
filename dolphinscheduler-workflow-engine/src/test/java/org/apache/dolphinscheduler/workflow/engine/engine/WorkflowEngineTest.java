@@ -70,7 +70,7 @@ class WorkflowEngineTest {
     void killWorkflow_WorkflowNotExist() {
         WorkflowExecuteRunnableNotFoundException exception =
                 assertThrows(WorkflowExecuteRunnableNotFoundException.class,
-                        () -> workflowEngine.killWorkflow(1));
+                        () -> workflowEngine.killWorkflow(1L));
         assertEquals("WorkflowExecuteRunnable not found: [id=1]", exception.getMessage());
     }
 
@@ -78,8 +78,8 @@ class WorkflowEngineTest {
     void killWorkflow_WorkflowExist() {
         IWorkflowExecutionRunnable mockWorkflowExecuteRunnable =
                 MockWorkflowExecutionRunnableFactory.createWorkflowExecutionRunnable();
-        Integer workflowInstanceId =
-                mockWorkflowExecuteRunnable.getWorkflowExecutionContext().getWorkflowInstanceId();
+        Long workflowInstanceId =
+                mockWorkflowExecuteRunnable.getWorkflowExecutionContext().getIdentify().getId();
         SingletonWorkflowExecutionRunnableRepository.getInstance()
                 .storeWorkflowExecutionRunnable(mockWorkflowExecuteRunnable);
 
@@ -90,15 +90,15 @@ class WorkflowEngineTest {
 
     @Test
     void finalizeWorkflow_WorkflowNotExist() {
-        workflowEngine.finalizeWorkflow(-1);
+        workflowEngine.finalizeWorkflow(-1L);
     }
 
     @Test
     void finalizeWorkflow_WorkflowExist() {
         IWorkflowExecutionRunnable emptyWorkflowExecuteRunnable =
                 MockWorkflowExecutionRunnableFactory.createWorkflowExecutionRunnable();
-        Integer workflowInstanceId =
-                emptyWorkflowExecuteRunnable.getWorkflowExecutionContext().getWorkflowInstanceId();
+        Long workflowInstanceId =
+                emptyWorkflowExecuteRunnable.getWorkflowExecutionContext().getIdentify().getId();
         SingletonWorkflowExecutionRunnableRepository.getInstance()
                 .storeWorkflowExecutionRunnable(emptyWorkflowExecuteRunnable);
         SingletonWorkflowExecuteRunnableRepositoryAssertions.existWorkflowExecutionRunnable(workflowInstanceId);

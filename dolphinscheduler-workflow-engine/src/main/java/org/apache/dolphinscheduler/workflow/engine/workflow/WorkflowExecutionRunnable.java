@@ -20,10 +20,6 @@ package org.apache.dolphinscheduler.workflow.engine.workflow;
 import org.apache.dolphinscheduler.workflow.engine.engine.IDAGEngine;
 import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
 
-import org.apache.commons.collections4.CollectionUtils;
-
-import java.util.List;
-
 import lombok.Getter;
 
 @Getter
@@ -33,30 +29,58 @@ public class WorkflowExecutionRunnable implements IWorkflowExecutionRunnable {
 
     private final IDAGEngine dagEngine;
 
-    private volatile boolean eventFiring = false;
+    private final IWorkflowExecutionRunnableDelegate workflowExecutionRunnableDelegate;
 
-    public WorkflowExecutionRunnable(IWorkflowExecutionContext workflowExecutionContext, IDAGEngine dagEngine) {
+    private WorkflowExecutionRunnableStatus workflowExecutionRunnableStatus;
+
+    public WorkflowExecutionRunnable(IWorkflowExecutionContext workflowExecutionContext,
+                                     IDAGEngine dagEngine,
+                                     IWorkflowExecutionRunnableDelegate workflowExecutionRunnableDelegate) {
         this.workflowExecutionContext = workflowExecutionContext;
         this.dagEngine = dagEngine;
+        this.workflowExecutionRunnableDelegate = workflowExecutionRunnableDelegate;
+        this.workflowExecutionRunnableStatus = WorkflowExecutionRunnableStatus.CREATED;
+    }
+
+    @Override
+    public IWorkflowExecutionRunnableIdentify getIdentity() {
+        return workflowExecutionContext.getIdentify();
     }
 
     public void start() {
-        List<String> workflowStartNodeNames = workflowExecutionContext.getWorkflowExecutionDAG().getStartNodeNames();
-        if (CollectionUtils.isEmpty(workflowStartNodeNames)) {
-            dagEngine.triggerNextTasks(null);
-        } else {
-            workflowStartNodeNames.forEach(dagEngine::triggerTask);
+        if (workflowExecutionRunnableStatus != WorkflowExecutionRunnableStatus.CREATED) {
+            throw new UnsupportedOperationException("The current status is not CREATED, cannot start.");
         }
+        workflowExecutionRunnableDelegate.beforeStart();
+        // Set the current status to RUNNING
+        workflowExecutionRunnableStatus = WorkflowExecutionRunnableStatus.RUNNING;
+        dagEngine.start();
+        workflowExecutionRunnableDelegate.afterStart();
     }
 
     @Override
     public void pause() {
-        dagEngine.pauseAllTask();
+        if (workflowExecutionRunnableStatus != WorkflowExecutionRunnableStatus.RUNNING) {
+            throw new UnsupportedOperationException("The current status is not RUNNING, cannot pause.");
+        }
+        workflowExecutionRunnableDelegate.beforePause();
+        // Set the current status to PAUSING
+        workflowExecutionRunnableStatus = WorkflowExecutionRunnableStatus.PAUSING;
+        dagEngine.pause();
+        workflowExecutionRunnableDelegate.afterPause();
     }
 
     @Override
     public void kill() {
-        dagEngine.killAllTask();
+        if (workflowExecutionRunnableStatus != WorkflowExecutionRunnableStatus.RUNNING
+                && workflowExecutionRunnableStatus != WorkflowExecutionRunnableStatus.PAUSING) {
+            throw new UnsupportedOperationException("The current status is not RUNNING, cannot kill.");
+        }
+        workflowExecutionRunnableDelegate.beforeKill();
+        // Set the current status to KILLING
+        workflowExecutionRunnableStatus = WorkflowExecutionRunnableStatus.KILLING;
+        dagEngine.kill();
+        workflowExecutionRunnableDelegate.afterKill();
     }
 
     @Override
@@ -64,13 +88,4 @@ public class WorkflowExecutionRunnable implements IWorkflowExecutionRunnable {
         return workflowExecutionContext.getEventRepository();
     }
 
-    @Override
-    public boolean isEventFiring() {
-        return eventFiring;
-    }
-
-    @Override
-    public void setEventFiring(boolean eventFiring) {
-        this.eventFiring = eventFiring;
-    }
 }

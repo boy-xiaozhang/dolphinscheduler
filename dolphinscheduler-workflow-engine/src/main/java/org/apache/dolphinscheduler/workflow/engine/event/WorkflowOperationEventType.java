@@ -15,20 +15,22 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.workflow;
+package org.apache.dolphinscheduler.workflow.engine.event;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public enum WorkflowOperationEventType implements IEventType {
 
-public interface IEventfulExecutionRunnable {
+    /**
+     * Trigger the workflow instance.
+     */
+    TRIGGER,
+    /**
+     * Pause the workflow instance, it will pause the running task instances.
+     */
+    PAUSE,
+    /**
+     * Kill the workflow instance, it will kill the running task instances.
+     */
+    KILL,
+    ;
 
-    IEventRepository getEventRepository();
-
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
-    }
-
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
-    }
 }

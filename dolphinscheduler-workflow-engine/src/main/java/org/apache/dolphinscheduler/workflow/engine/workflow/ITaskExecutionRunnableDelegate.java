@@ -15,15 +15,20 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.event;
+package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-public enum TaskOperationType {
+public interface ITaskExecutionRunnableDelegate {
 
-    FAILOVER,
-    RUN,
-    RETRY,
-    KILL,
-    PAUSE,
-    ;
+    void beforeStart();
+
+    void afterStart();
+
+    void beforePause();
+
+    void afterPause();
+
+    void beforeKill();
+
+    void afterKill();
 
 }

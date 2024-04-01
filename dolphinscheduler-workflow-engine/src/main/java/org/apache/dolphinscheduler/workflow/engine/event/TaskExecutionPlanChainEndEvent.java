@@ -15,20 +15,29 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.workflow;
+package org.apache.dolphinscheduler.workflow.engine.event;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
+import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableIdentify;
 
-public interface IEventfulExecutionRunnable {
+import lombok.Builder;
+import lombok.Data;
 
-    IEventRepository getEventRepository();
+@Data
+@Builder
+public class TaskExecutionPlanChainEndEvent implements IEvent, ISyncEvent {
 
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
+    private final IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify;
+    // If the taskIdentify is null then means there is no active TaskExecutionPlan in the workflow
+    private final ITaskIdentify taskIdentify;
+
+    @Override
+    public IEventType getEventType() {
+        return null;
     }
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
+    @Override
+    public Class getEventOperatorClass() {
+        return null;
     }
 }

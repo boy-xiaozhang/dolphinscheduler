@@ -17,7 +17,7 @@
 
 package org.apache.dolphinscheduler.workflow.engine.event;
 
-import org.apache.dolphinscheduler.workflow.engine.workflow.ITaskExecutionRunnable;
+import org.apache.dolphinscheduler.workflow.engine.workflow.ITaskExecutionPlan;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +30,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TaskOperationEvent implements ITaskEvent, ISyncEvent {
 
-    private ITaskExecutionRunnable taskExecutionRunnable;
+    private ITaskExecutionPlan taskExecutionPlan;
 
-    private TaskOperationType taskOperationType;
+    private TaskOperationEventType taskOperationEventType;
+
+    @Override
+    public IEventType getEventType() {
+        return taskOperationEventType;
+    }
 
     @Override
     public Class getEventOperatorClass() {

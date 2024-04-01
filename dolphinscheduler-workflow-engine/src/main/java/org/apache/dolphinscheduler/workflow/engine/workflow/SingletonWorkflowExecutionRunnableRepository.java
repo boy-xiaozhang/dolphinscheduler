@@ -26,7 +26,7 @@ public class SingletonWorkflowExecutionRunnableRepository implements IWorkflowEx
     private static final IWorkflowExecutionRunnableRepository INSTANCE =
             new SingletonWorkflowExecutionRunnableRepository();
 
-    private final Map<Integer, IWorkflowExecutionRunnable> workflowExecutionRunnableMap;
+    private final Map<IWorkflowExecutionRunnableIdentify, IWorkflowExecutionRunnable> workflowExecutionRunnableMap;
 
     private SingletonWorkflowExecutionRunnableRepository() {
         this.workflowExecutionRunnableMap = new ConcurrentHashMap<>();
@@ -36,22 +36,23 @@ public class SingletonWorkflowExecutionRunnableRepository implements IWorkflowEx
         return INSTANCE;
     }
 
+    @Override
     public void storeWorkflowExecutionRunnable(IWorkflowExecutionRunnable workflowExecutionRunnable) {
-        workflowExecutionRunnableMap.put(
-                workflowExecutionRunnable.getWorkflowExecutionContext().getWorkflowInstanceId(),
-                workflowExecutionRunnable);
+        workflowExecutionRunnableMap.put(workflowExecutionRunnable.getIdentity(), workflowExecutionRunnable);
     }
 
-    public IWorkflowExecutionRunnable getWorkflowExecutionRunnableById(Integer workflowInstanceId) {
-        return workflowExecutionRunnableMap.get(workflowInstanceId);
+    @Override
+    public IWorkflowExecutionRunnable getWorkflowExecutionRunnable(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify) {
+        return workflowExecutionRunnableMap.get(workflowExecutionRunnableIdentify);
     }
 
     public Collection<IWorkflowExecutionRunnable> getActiveWorkflowExecutionRunnable() {
         return workflowExecutionRunnableMap.values();
     }
 
-    public void removeWorkflowExecutionRunnable(Integer workflowInstanceId) {
-        workflowExecutionRunnableMap.remove(workflowInstanceId);
+    @Override
+    public void removeWorkflowExecutionRunnable(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify) {
+        workflowExecutionRunnableMap.remove(workflowExecutionRunnableIdentify);
     }
 
     @Override

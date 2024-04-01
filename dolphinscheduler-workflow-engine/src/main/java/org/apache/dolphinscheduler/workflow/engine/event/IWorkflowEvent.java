@@ -17,6 +17,8 @@
 
 package org.apache.dolphinscheduler.workflow.engine.event;
 
+import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableIdentify;
+
 public interface IWorkflowEvent extends IEvent {
 
     /**
@@ -24,6 +26,6 @@ public interface IWorkflowEvent extends IEvent {
      *
      * @return workflowInstanceId, shouldn't be null
      */
-    Integer getWorkflowInstanceId();
+    IWorkflowExecutionRunnableIdentify getWorkflowExecutionRunnableIdentify();
 
 }

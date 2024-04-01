@@ -24,13 +24,23 @@ public class WorkflowExecutionRunnableFactory implements IWorkflowExecutionRunna
 
     private final IDAGEngineFactory dagEngineFactory;
 
+    private IWorkflowExecutionRunnableDelegateFactory workflowExecutionRunnableDelegateFactory =
+            DefaultWorkflowExecutionRunnableDelegateFactory.getInstance();
+
     public WorkflowExecutionRunnableFactory(IDAGEngineFactory dagEngineFactory) {
         this.dagEngineFactory = dagEngineFactory;
+    }
+
+    public WorkflowExecutionRunnableFactory withWorkflowExecutionRunnableDelegateFactory(IWorkflowExecutionRunnableDelegateFactory workflowExecutionRunnableDelegateFactory) {
+        this.workflowExecutionRunnableDelegateFactory = workflowExecutionRunnableDelegateFactory;
+        return this;
     }
 
     @Override
     public WorkflowExecutionRunnable createWorkflowExecutionRunnable(IWorkflowExecutionContext workflowExecutionContext) {
         IDAGEngine dagEngine = dagEngineFactory.createDAGEngine(workflowExecutionContext);
-        return new WorkflowExecutionRunnable(workflowExecutionContext, dagEngine);
+        IWorkflowExecutionRunnableDelegate workflowExecutionRunnableDelegate = workflowExecutionRunnableDelegateFactory
+                .createWorkflowExecutionRunnableDelegate(workflowExecutionContext);
+        return new WorkflowExecutionRunnable(workflowExecutionContext, dagEngine, workflowExecutionRunnableDelegate);
     }
 }

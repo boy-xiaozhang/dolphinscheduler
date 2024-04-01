@@ -17,9 +17,11 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
+
 public interface ITaskExecutionContextFactory {
 
-    ITaskExecutionContext createTaskExecutionContext(String taskName,
+    ITaskExecutionContext createTaskExecutionContext(ITaskIdentify taskIdentify,
                                                      IWorkflowExecutionContext workflowExecutionContext);
 
 }

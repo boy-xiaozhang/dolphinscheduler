@@ -33,6 +33,6 @@ public class DAGEngineFactory implements IDAGEngineFactory {
 
     @Override
     public IDAGEngine createDAGEngine(IWorkflowExecutionContext workflowExecutionContext) {
-        return new DAGEngine(workflowExecutionContext, taskExecutionRunnableFactory);
+        return new DAGEngine(workflowExecutionContext);
     }
 }

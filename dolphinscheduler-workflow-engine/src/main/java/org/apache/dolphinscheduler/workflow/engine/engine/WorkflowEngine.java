@@ -21,6 +21,7 @@ import org.apache.dolphinscheduler.workflow.engine.event.WorkflowOperationEvent;
 import org.apache.dolphinscheduler.workflow.engine.exception.WorkflowExecuteRunnableNotFoundException;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionContext;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnable;
+import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableIdentify;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -46,47 +47,49 @@ public class WorkflowEngine implements IWorkflowEngine {
     @Override
     public void triggerWorkflow(IWorkflowExecutionRunnable workflowExecuteRunnable) {
         IWorkflowExecutionContext workflowExecutionContext = workflowExecuteRunnable.getWorkflowExecutionContext();
-        Integer workflowInstanceId = workflowExecutionContext.getWorkflowInstanceId();
-        log.info("Triggering WorkflowExecutionRunnable: {}", workflowExecutionContext.getWorkflowInstanceName());
+        IWorkflowExecutionRunnableIdentify workflowExecutionIdentify = workflowExecutionContext.getIdentify();
+        log.info("Triggering WorkflowExecutionRunnable: {}", workflowExecutionIdentify);
         workflowExecuteRunnableRepository.storeWorkflowExecutionRunnable(workflowExecuteRunnable);
-        workflowExecuteRunnable.storeEventToTail(WorkflowOperationEvent.triggerEvent(workflowInstanceId));
+        workflowExecuteRunnable
+                .storeEventToTail(WorkflowOperationEvent.triggerEvent(workflowExecutionIdentify));
     }
 
     @Override
-    public void pauseWorkflow(Integer workflowInstanceId) {
+    public void pauseWorkflow(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify) {
         IWorkflowExecutionRunnable workflowExecuteRunnable =
-                workflowExecuteRunnableRepository.getWorkflowExecutionRunnableById(workflowInstanceId);
+                workflowExecuteRunnableRepository.getWorkflowExecutionRunnable(workflowExecutionRunnableIdentify);
         if (workflowExecuteRunnable == null) {
-            throw new WorkflowExecuteRunnableNotFoundException(workflowInstanceId);
+            throw new WorkflowExecuteRunnableNotFoundException(workflowExecutionRunnableIdentify);
         }
         log.info("Pausing WorkflowExecutionRunnable: {}",
-                workflowExecuteRunnable.getWorkflowExecutionContext().getWorkflowInstanceName());
-        workflowExecuteRunnable.storeEventToTail(WorkflowOperationEvent.pauseEvent(workflowInstanceId));
+                workflowExecuteRunnable.getWorkflowExecutionContext().getIdentify());
+        workflowExecuteRunnable
+                .storeEventToTail(WorkflowOperationEvent.pauseEvent(workflowExecuteRunnable.getIdentity()));
     }
 
     @Override
-    public void killWorkflow(Integer workflowInstanceId) {
+    public void killWorkflow(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify) {
         IWorkflowExecutionRunnable workflowExecuteRunnable =
-                workflowExecuteRunnableRepository.getWorkflowExecutionRunnableById(workflowInstanceId);
+                workflowExecuteRunnableRepository.getWorkflowExecutionRunnable(workflowExecutionRunnableIdentify);
         if (workflowExecuteRunnable == null) {
-            throw new WorkflowExecuteRunnableNotFoundException(workflowInstanceId);
+            throw new WorkflowExecuteRunnableNotFoundException(workflowExecutionRunnableIdentify);
         }
         log.info("Killing WorkflowExecutionRunnable: {}",
-                workflowExecuteRunnable.getWorkflowExecutionContext().getWorkflowInstanceName());
-        workflowExecuteRunnable.storeEventToTail(WorkflowOperationEvent.killEvent(workflowInstanceId));
+                workflowExecuteRunnable.getWorkflowExecutionContext().getIdentify());
+        workflowExecuteRunnable
+                .storeEventToTail(WorkflowOperationEvent.killEvent(workflowExecuteRunnable.getIdentity()));
     }
 
     @Override
-    public void finalizeWorkflow(Integer workflowInstanceId) {
+    public void finalizeWorkflow(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify) {
         IWorkflowExecutionRunnable workflowExecutionRunnable =
-                workflowExecuteRunnableRepository.getWorkflowExecutionRunnableById(workflowInstanceId);
+                workflowExecuteRunnableRepository.getWorkflowExecutionRunnable(workflowExecutionRunnableIdentify);
         if (workflowExecutionRunnable == null) {
             return;
         }
         // todo: If the workflowExecutionRunnable is not finished, we cannot finalize it.
-        log.info("Finalizing WorkflowExecutionRunnable: {}",
-                workflowExecutionRunnable.getWorkflowExecutionContext().getWorkflowInstanceName());
-        workflowExecuteRunnableRepository.removeWorkflowExecutionRunnable(workflowInstanceId);
+        log.info("Finalizing WorkflowExecutionRunnable: {}", workflowExecutionRunnable.getIdentity());
+        workflowExecuteRunnableRepository.removeWorkflowExecutionRunnable(workflowExecutionRunnableIdentify);
     }
 
     @Override

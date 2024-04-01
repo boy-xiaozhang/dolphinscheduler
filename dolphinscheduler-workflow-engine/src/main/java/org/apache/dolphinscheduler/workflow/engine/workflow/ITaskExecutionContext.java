@@ -17,8 +17,12 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
+import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+
 public interface ITaskExecutionContext {
 
-    ITaskInstance getTaskInstance();
+    ITaskExecutionRunnableIdentify getIdentify();
+
+    IEventRepository getEventRepository();
 
 }

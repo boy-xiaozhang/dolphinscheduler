@@ -17,9 +17,11 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
+
 public interface ITaskExecutionRunnableFactory {
 
-    ITaskExecutionRunnable createTaskExecutionRunnable(String taskName,
+    ITaskExecutionRunnable createTaskExecutionRunnable(ITaskIdentify taskIdentify,
                                                        IWorkflowExecutionContext workflowExecutionContext);
 
     ITaskExecutionRunnable createFailoverTaskExecutionRunnable(ITaskExecutionRunnable taskExecutionRunnable,

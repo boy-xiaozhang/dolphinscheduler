@@ -36,12 +36,14 @@ public class WorkflowOperationEventOperator implements IWorkflowEventOperator<Wo
     @Override
     public void handleEvent(WorkflowOperationEvent event) {
         IWorkflowExecutionRunnable workflowExecutionRunnable =
-                workflowExecuteRunnableRepository.getWorkflowExecutionRunnableById(event.getWorkflowInstanceId());
+                workflowExecuteRunnableRepository
+                        .getWorkflowExecutionRunnable(event.getWorkflowExecutionRunnableIdentify());
         if (workflowExecutionRunnable == null) {
             log.warn("WorkflowExecutionRunnable not found: {}", event);
             return;
         }
-        switch (event.getWorkflowOperationType()) {
+        WorkflowOperationEventType workflowOperationEvent = (WorkflowOperationEventType) event.getEventType();
+        switch (workflowOperationEvent) {
             case TRIGGER:
                 triggerWorkflow(workflowExecutionRunnable);
                 break;
@@ -65,9 +67,9 @@ public class WorkflowOperationEventOperator implements IWorkflowEventOperator<Wo
             }
             IWorkflowExecutionContext workflowExecutionContext =
                     workflowExecutionRunnable.getWorkflowExecutionContext();
-            log.error("Trigger workflow: {} failed", workflowExecutionContext.getWorkflowInstanceName(), exception);
+            log.error("Trigger workflow: {} failed", workflowExecutionContext.getIdentify(), exception);
             WorkflowFailedEvent workflowExecutionRunnableFailedEvent = WorkflowFailedEvent.builder()
-                    .workflowInstanceId(workflowExecutionContext.getWorkflowInstanceId())
+                    .workflowExecutionRunnableIdentify(workflowExecutionRunnable.getIdentity())
                     .failedReason(exception.getMessage())
                     .build();
             workflowExecutionRunnable.storeEventToTail(workflowExecutionRunnableFailedEvent);

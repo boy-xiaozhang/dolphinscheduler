@@ -19,14 +19,4 @@ package org.apache.dolphinscheduler.workflow.engine.workflow;
 
 public class TaskExecutionContext implements ITaskExecutionContext {
 
-    private final ITaskInstance taskInstance;
-
-    public TaskExecutionContext(ITaskInstance taskInstance) {
-        this.taskInstance = taskInstance;
-    }
-
-    @Override
-    public ITaskInstance getTaskInstance() {
-        return taskInstance;
-    }
 }

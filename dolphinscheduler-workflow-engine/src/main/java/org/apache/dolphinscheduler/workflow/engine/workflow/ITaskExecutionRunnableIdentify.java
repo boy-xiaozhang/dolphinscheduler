@@ -17,22 +17,14 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import lombok.Getter;
+import org.apache.dolphinscheduler.workflow.engine.dag.TaskIdentify;
 
-@Getter
-public class WorkflowInstance implements IWorkflowInstance {
+public interface ITaskExecutionRunnableIdentify {
 
-    private final int id;
+    Long getId();
 
-    private final String name;
+    String getName();
 
-    public WorkflowInstance(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public static WorkflowInstance of(int id, String name) {
-        return new WorkflowInstance(id, name);
-    }
+    TaskIdentify getTaskIdentify();
 
 }

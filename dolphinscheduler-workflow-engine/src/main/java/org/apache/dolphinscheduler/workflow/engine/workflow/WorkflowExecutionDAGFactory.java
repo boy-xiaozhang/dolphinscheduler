@@ -17,18 +17,10 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public class WorkflowExecutionDAGFactory {
 
-public interface IEventfulExecutionRunnable {
-
-    IEventRepository getEventRepository();
-
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
+    public WorkflowExecutionDAG createDAG() {
+        return new WorkflowExecutionDAG(null, null);
     }
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
-    }
 }

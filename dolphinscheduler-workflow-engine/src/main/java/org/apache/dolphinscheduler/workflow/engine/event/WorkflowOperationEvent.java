@@ -17,39 +17,49 @@
 
 package org.apache.dolphinscheduler.workflow.engine.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableIdentify;
 
-@Data
-@Builder
-@AllArgsConstructor
 public class WorkflowOperationEvent implements IWorkflowEvent, ISyncEvent {
 
-    private Integer workflowInstanceId;
-    private WorkflowOperationType workflowOperationType;
+    private final IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify;
+    private final WorkflowOperationEventType workflowOperationEventType;
 
-    public static WorkflowOperationEvent of(Integer workflowInstanceId, WorkflowOperationType workflowOperationType) {
-        return WorkflowOperationEvent.builder()
-                .workflowInstanceId(workflowInstanceId)
-                .workflowOperationType(workflowOperationType)
-                .build();
+    private WorkflowOperationEvent(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify,
+                                   WorkflowOperationEventType workflowOperationEventType) {
+        this.workflowExecutionRunnableIdentify = workflowExecutionRunnableIdentify;
+        this.workflowOperationEventType = workflowOperationEventType;
     }
 
-    public static WorkflowOperationEvent triggerEvent(Integer workflowInstanceId) {
-        return of(workflowInstanceId, WorkflowOperationType.TRIGGER);
+    public static WorkflowOperationEvent of(IWorkflowExecutionRunnableIdentify workflowExecutionIdentify,
+                                            WorkflowOperationEventType workflowOperationEventType) {
+        return new WorkflowOperationEvent(workflowExecutionIdentify, workflowOperationEventType);
     }
 
-    public static WorkflowOperationEvent pauseEvent(Integer workflowInstanceId) {
-        return of(workflowInstanceId, WorkflowOperationType.PAUSE);
+    public static WorkflowOperationEvent triggerEvent(IWorkflowExecutionRunnableIdentify workflowExecutionIdentify) {
+        return of(workflowExecutionIdentify, WorkflowOperationEventType.TRIGGER);
     }
 
-    public static WorkflowOperationEvent killEvent(Integer workflowInstanceId) {
-        return of(workflowInstanceId, WorkflowOperationType.KILL);
+    public static WorkflowOperationEvent pauseEvent(IWorkflowExecutionRunnableIdentify workflowExecutionIdentify) {
+        return of(workflowExecutionIdentify, WorkflowOperationEventType.PAUSE);
+    }
+
+    public static WorkflowOperationEvent killEvent(IWorkflowExecutionRunnableIdentify workflowExecutionIdentify) {
+        return of(workflowExecutionIdentify, WorkflowOperationEventType.KILL);
+    }
+
+    @Override
+    public IEventType getEventType() {
+        return workflowOperationEventType;
     }
 
     @Override
     public Class getEventOperatorClass() {
         return WorkflowOperationEventOperator.class;
     }
+
+    @Override
+    public IWorkflowExecutionRunnableIdentify getWorkflowExecutionRunnableIdentify() {
+        return workflowExecutionRunnableIdentify;
+    }
+
 }

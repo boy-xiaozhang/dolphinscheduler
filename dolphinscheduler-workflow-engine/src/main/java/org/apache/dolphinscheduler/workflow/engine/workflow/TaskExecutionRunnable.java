@@ -17,32 +17,50 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
+import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+
 public class TaskExecutionRunnable implements ITaskExecutionRunnable {
 
-    public final ITaskExecutionContext taskExecutionContext;
+    private final ITaskExecutionContext taskExecutionContext;
 
-    public TaskExecutionRunnable(ITaskExecutionContext taskExecutionContext) {
+    private final ITaskExecutionRunnableDelegate taskExecutionRunnableDelegate;
+
+    public TaskExecutionRunnable(ITaskExecutionContext taskExecutionContext,
+                                 ITaskExecutionRunnableDelegate taskExecutionRunnableDelegate) {
         this.taskExecutionContext = taskExecutionContext;
+        this.taskExecutionRunnableDelegate = taskExecutionRunnableDelegate;
     }
 
     @Override
-    public void dispatch() {
+    public void start() {
+        taskExecutionRunnableDelegate.beforeStart();
 
-    }
-
-    @Override
-    public void run() {
-
-    }
-
-    @Override
-    public void kill() {
+        taskExecutionRunnableDelegate.afterStart();
 
     }
 
     @Override
     public void pause() {
+        taskExecutionRunnableDelegate.beforePause();
+        taskExecutionRunnableDelegate.afterPause();
 
+    }
+
+    @Override
+    public void kill() {
+        taskExecutionRunnableDelegate.beforeKill();
+        taskExecutionRunnableDelegate.afterKill();
+
+    }
+
+    @Override
+    public boolean isReadyToTrigger(String taskNodeName) {
+        return false;
+    }
+
+    @Override
+    public ITaskExecutionRunnableIdentify getIdentify() {
+        return taskExecutionContext.getIdentify();
     }
 
     @Override
@@ -51,7 +69,7 @@ public class TaskExecutionRunnable implements ITaskExecutionRunnable {
     }
 
     @Override
-    public boolean isReadyToTrigger(String taskNodeName) {
-        return false;
+    public IEventRepository getEventRepository() {
+        return taskExecutionContext.getEventRepository();
     }
 }

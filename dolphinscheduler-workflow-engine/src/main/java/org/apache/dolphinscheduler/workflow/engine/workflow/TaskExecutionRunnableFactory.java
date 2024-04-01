@@ -17,20 +17,32 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
+
 public class TaskExecutionRunnableFactory implements ITaskExecutionRunnableFactory {
 
     private final ITaskExecutionContextFactory taskExecutionContextFactory;
+
+    private ITaskExecutionRunnableDelegateFactory taskExecutionRunnableDelegateFactory =
+            DefaultTaskExecutionRunnableDelegateFactory.getInstance();
 
     public TaskExecutionRunnableFactory(ITaskExecutionContextFactory taskExecutionContextFactory) {
         this.taskExecutionContextFactory = taskExecutionContextFactory;
     }
 
+    public TaskExecutionRunnableFactory withTaskExecutionRunnableDelegateFactory(ITaskExecutionRunnableDelegateFactory taskExecutionRunnableDelegateFactory) {
+        this.taskExecutionRunnableDelegateFactory = taskExecutionRunnableDelegateFactory;
+        return this;
+    }
+
     @Override
-    public ITaskExecutionRunnable createTaskExecutionRunnable(String taskName,
+    public ITaskExecutionRunnable createTaskExecutionRunnable(ITaskIdentify taskIdentify,
                                                               IWorkflowExecutionContext workflowExecutionContext) {
         ITaskExecutionContext taskExecutionContext =
-                taskExecutionContextFactory.createTaskExecutionContext(taskName, workflowExecutionContext);
-        return new TaskExecutionRunnable(taskExecutionContext);
+                taskExecutionContextFactory.createTaskExecutionContext(taskIdentify, workflowExecutionContext);
+        ITaskExecutionRunnableDelegate taskExecutionRunnableDelegate = taskExecutionRunnableDelegateFactory
+                .createTaskExecutionRunnable(taskIdentify, workflowExecutionContext);
+        return new TaskExecutionRunnable(taskExecutionContext, taskExecutionRunnableDelegate);
     }
 
     @Override

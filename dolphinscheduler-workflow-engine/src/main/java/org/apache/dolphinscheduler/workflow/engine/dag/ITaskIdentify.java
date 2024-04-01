@@ -15,20 +15,12 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.workflow;
+package org.apache.dolphinscheduler.workflow.engine.dag;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public interface ITaskIdentify {
 
-public interface IEventfulExecutionRunnable {
+    Long getId();
 
-    IEventRepository getEventRepository();
+    String getName();
 
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
-    }
-
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
-    }
 }

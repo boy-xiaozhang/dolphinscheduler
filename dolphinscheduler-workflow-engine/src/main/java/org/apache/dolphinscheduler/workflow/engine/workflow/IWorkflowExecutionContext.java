@@ -17,22 +17,22 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
+import org.apache.dolphinscheduler.workflow.engine.dag.WorkflowDAG;
 import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+
+import java.util.List;
 
 public interface IWorkflowExecutionContext {
 
-    IWorkflowInstance getWorkflowInstance();
+    IWorkflowExecutionRunnableIdentify getIdentify();
 
-    IWorkflowExecutionDAG getWorkflowExecutionDAG();
+    List<ITaskIdentify> getStartTaskIdentifies();
+
+    WorkflowDAG getWorkflowDAG();
+
+    WorkflowExecutionDAG getWorkflowExecutionDAG();
 
     IEventRepository getEventRepository();
-
-    default int getWorkflowInstanceId() {
-        return getWorkflowInstance().getId();
-    }
-
-    default String getWorkflowInstanceName() {
-        return getWorkflowInstance().getName();
-    }
 
 }

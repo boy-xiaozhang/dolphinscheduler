@@ -23,11 +23,11 @@ public interface IWorkflowExecutionRunnableRepository {
 
     void storeWorkflowExecutionRunnable(IWorkflowExecutionRunnable workflowExecutionRunnable);
 
-    IWorkflowExecutionRunnable getWorkflowExecutionRunnableById(Integer workflowInstanceId);
+    IWorkflowExecutionRunnable getWorkflowExecutionRunnable(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify);
 
     Collection<IWorkflowExecutionRunnable> getActiveWorkflowExecutionRunnable();
 
-    void removeWorkflowExecutionRunnable(Integer workflowInstanceId);
+    void removeWorkflowExecutionRunnable(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify);
 
     void clear();
 }

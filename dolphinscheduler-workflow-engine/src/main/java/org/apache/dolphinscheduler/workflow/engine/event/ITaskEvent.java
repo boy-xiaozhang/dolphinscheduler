@@ -17,10 +17,10 @@
 
 package org.apache.dolphinscheduler.workflow.engine.event;
 
-import org.apache.dolphinscheduler.workflow.engine.workflow.ITaskExecutionRunnable;
+import org.apache.dolphinscheduler.workflow.engine.workflow.ITaskExecutionPlan;
 
 public interface ITaskEvent extends IEvent {
 
-    ITaskExecutionRunnable getTaskExecutionRunnable();
+    ITaskExecutionPlan getTaskExecutionPlan();
 
 }

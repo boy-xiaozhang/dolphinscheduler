@@ -19,11 +19,6 @@ package org.apache.dolphinscheduler.workflow.engine.dag;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -18,7 +18,6 @@
 package org.apache.dolphinscheduler.workflow.engine.dag;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The Directed Acyclic Graph class.
@@ -27,9 +26,8 @@ import java.util.stream.Collectors;
  * The nodes are the tasks, the edges are the dependencies between the tasks.
  * The DAG is acyclic, which means there is no cycle in the graph.
  * The DAG is a directed graph, which means the edges have direction.
- *
  */
-public interface DAG {
+public interface DAG<Node, NodeIdentify> {
 
     /**
      * Get the direct post node of given dagNode, if the dagNode is null, return the nodes which doesn't have inDegrees.
@@ -50,26 +48,7 @@ public interface DAG {
      */
     List<Node> getDirectPostNodes(Node node);
 
-    /**
-     * Same with {@link #getDirectPostNodes(Node)}.
-     * <p>
-     * If the dagNodeName is null, return the nodes which doesn't have inDegrees. Otherwise, return the post nodes of
-     * the given dagNodeName. If the dagNodeName is not null and cannot find the node in DAG, throw IllegalArgumentException.
-     *
-     * @param dagNodeName task name, can be null.
-     * @return post task name list, sort by priority.
-     * @throws IllegalArgumentException if the dagNodeName is not null and cannot find the node in DAG.
-     */
-    List<Node> getDirectPostNodes(String dagNodeName);
-
-    /**
-     * Same with {@link #getDirectPostNodes(String)}. Return the post node names.
-     *
-     * @param dagNodeName task name, can be null.
-     * @return post task name list, sort by priority.
-     * @throws IllegalArgumentException if the dagNodeName is not null and cannot find the node in DAG.
-     */
-     List<String> getDirectPostNodeNames(String dagNodeName);
+    List<Node> getDirectPostNodesByIdentify(NodeIdentify nodeIdentify);
 
     /**
      * Get the direct pre node of given dagNode, if the dagNode is null, return the nodes which doesn't have outDegrees.
@@ -90,33 +69,14 @@ public interface DAG {
      */
     List<Node> getDirectPreNodes(Node node);
 
-    /**
-     * Same with {@link #getDirectPreNodes(Node)}.
-     * <p>
-     * If the dagNodeName is null, return the nodes which doesn't have outDegrees. Otherwise, return the pre nodes of
-     * the given dagNodeName. If the dagNodeName is not null and cannot find the node in DAG, throw IllegalArgumentException.
-     *
-     * @param dagNodeName task name, can be null.
-     * @return pre task name list, sort by priority.
-     * @throws IllegalArgumentException if the dagNodeName is not null and cannot find the node in DAG.
-     */
-    List<Node> getDirectPreNodes(String dagNodeName);
-
-    /**
-     * Same with {@link #getDirectPreNodes(String)}. Return the pre node names.
-     *
-     * @param dagNodeName task name, can be null.
-     * @return pre task name list, sort by priority.
-     * @throws IllegalArgumentException if the dagNodeName is not null and cannot find the node in DAG.
-     */
-    List<String> getDirectPreNodeNames(String dagNodeName);
+    List<Node> getDirectPreNodesByIdentify(NodeIdentify nodeIdentify);
 
     /**
      * Get the node of the DAG by the node name.
      *
-     * @param nodeName the node name.
+     * @param nodeIdentify the node name.
      * @return the node of the DAG, return null if cannot find the node.
      */
-    Node getDAGNode(String nodeName);
+    Node getDAGNode(NodeIdentify nodeIdentify);
 
 }

@@ -15,22 +15,10 @@
  * limitations under the License.
  */
 
-package org.apache.dolphinscheduler.workflow.engine.event;
+package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-public enum WorkflowOperationType {
+public interface IWorkflowExecutionRunnableDelegateFactory {
 
-    /**
-     * Trigger the workflow instance.
-     */
-    TRIGGER,
-    /**
-     * Pause the workflow instance, it will pause the running task instances.
-     */
-    PAUSE,
-    /**
-     * Kill the workflow instance, it will kill the running task instances.
-     */
-    KILL,
-    ;
+    IWorkflowExecutionRunnableDelegate createWorkflowExecutionRunnableDelegate(IWorkflowExecutionContext workflowExecutionContext);
 
 }

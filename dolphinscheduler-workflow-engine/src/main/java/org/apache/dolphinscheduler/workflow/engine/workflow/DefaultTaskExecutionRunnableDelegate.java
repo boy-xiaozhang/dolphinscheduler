@@ -17,18 +17,35 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+public class DefaultTaskExecutionRunnableDelegate implements ITaskExecutionRunnableDelegate {
 
-public interface IEventfulExecutionRunnable {
+    @Override
+    public void beforeStart() {
 
-    IEventRepository getEventRepository();
-
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
     }
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
+    @Override
+    public void afterStart() {
+
+    }
+
+    @Override
+    public void beforePause() {
+
+    }
+
+    @Override
+    public void afterPause() {
+
+    }
+
+    @Override
+    public void beforeKill() {
+
+    }
+
+    @Override
+    public void afterKill() {
+
     }
 }

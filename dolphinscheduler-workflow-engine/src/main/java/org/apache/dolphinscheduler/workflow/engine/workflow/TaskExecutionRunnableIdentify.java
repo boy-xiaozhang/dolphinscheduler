@@ -17,18 +17,37 @@
 
 package org.apache.dolphinscheduler.workflow.engine.workflow;
 
-import org.apache.dolphinscheduler.workflow.engine.event.IEvent;
-import org.apache.dolphinscheduler.workflow.engine.event.IEventRepository;
+import org.apache.dolphinscheduler.workflow.engine.dag.TaskIdentify;
 
-public interface IEventfulExecutionRunnable {
+import lombok.EqualsAndHashCode;
 
-    IEventRepository getEventRepository();
+@EqualsAndHashCode
+public class TaskExecutionRunnableIdentify implements ITaskExecutionRunnableIdentify {
 
-    default void storeEventToTail(IEvent event) {
-        getEventRepository().storeEventToTail(event);
+    private final Long id;
+
+    private final String name;
+
+    private final TaskIdentify taskIdentify;
+
+    public TaskExecutionRunnableIdentify(Long id, String name, TaskIdentify taskIdentify) {
+        this.id = id;
+        this.name = name;
+        this.taskIdentify = taskIdentify;
     }
 
-    default void storeEventToHead(IEvent event) {
-        getEventRepository().storeEventToHead(event);
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public TaskIdentify getTaskIdentify() {
+        return taskIdentify;
     }
 }

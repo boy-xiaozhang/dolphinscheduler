@@ -17,6 +17,8 @@
 
 package org.apache.dolphinscheduler.workflow.engine.engine;
 
+import org.apache.dolphinscheduler.workflow.engine.dag.ITaskIdentify;
+import org.apache.dolphinscheduler.workflow.engine.workflow.ITaskExecutionRunnableIdentify;
 import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionDAG;
 
 /**
@@ -26,47 +28,51 @@ import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionDA
 public interface IDAGEngine {
 
     /**
-     * Trigger the tasks which are post of the given task.
-     * <P> If there are no task after the given taskNode, will try to finish the WorkflowExecutionRunnable.
-     * <p> If the
-     *
-     * @param parentTaskNodeName the parent task name
+     * Start the DAGEngine, will trigger the start tasks.
      */
-    void triggerNextTasks(String parentTaskNodeName);
+    void start();
 
     /**
-     * Trigger the given task
+     * Trigger the tasks which are post of the given task.
+     * <P> If there are no task after the given taskNode, will try to finish the WorkflowExecutionRunnable(Send a task chain end event).
      *
-     * @param taskName task name
+     * @param taskIdentify the parent task identify
      */
-    void triggerTask(String taskName);
+    void triggerNextTasks(ITaskIdentify taskIdentify);
+
+    /**
+     * Trigger the given task.
+     *
+     * @param taskIdentify task name
+     */
+    void triggerTask(ITaskIdentify taskIdentify);
 
     /**
      * Failover the given task.
      *
      * @param taskInstanceId taskInstanceId
      */
-    void failoverTask(Integer taskInstanceId);
+    void failoverTask(ITaskExecutionRunnableIdentify taskInstanceId);
 
     /**
      * Retry the given task.
      *
      * @param taskInstanceId taskInstanceId
      */
-    void retryTask(Integer taskInstanceId);
+    void retryTask(ITaskExecutionRunnableIdentify taskInstanceId);
 
-    void pauseAllTask();
+    void pause();
 
     /**
      * Pause the given task.
      */
-    void pauseTask(Integer taskInstanceId);
+    void pauseTask(ITaskExecutionRunnableIdentify taskExecutionIdentify);
 
-    void killAllTask();
+    void kill();
 
     /**
      * Kill the given task.
      */
-    void killTask(Integer taskId);
+    void killTask(ITaskExecutionRunnableIdentify taskExecutionIdentify);
 
 }

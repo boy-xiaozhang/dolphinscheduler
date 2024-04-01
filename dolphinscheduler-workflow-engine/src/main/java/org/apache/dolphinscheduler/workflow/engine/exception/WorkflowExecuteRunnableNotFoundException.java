@@ -17,14 +17,12 @@
 
 package org.apache.dolphinscheduler.workflow.engine.exception;
 
+import org.apache.dolphinscheduler.workflow.engine.workflow.IWorkflowExecutionRunnableIdentify;
+
 public class WorkflowExecuteRunnableNotFoundException extends RuntimeException {
 
-    public WorkflowExecuteRunnableNotFoundException(Integer workflowInstanceId) {
-        super("WorkflowExecuteRunnable not found: [id=" + workflowInstanceId + "]");
-    }
-
-    public WorkflowExecuteRunnableNotFoundException(String workflowInstanceName) {
-        super("WorkflowExecuteRunnable not found: [name=" + workflowInstanceName + "]");
+    public WorkflowExecuteRunnableNotFoundException(IWorkflowExecutionRunnableIdentify workflowExecutionRunnableIdentify) {
+        super("WorkflowExecuteRunnable not found: " + workflowExecutionRunnableIdentify);
     }
 
 }
