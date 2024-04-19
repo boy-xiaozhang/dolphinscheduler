@@ -232,6 +232,29 @@ export function useDataList() {
       },
       {
         label: () =>
+            h(NEllipsis, null, { default: () => t('menu.data_server') }),
+        key: 'data-server',
+        icon: renderIcon(ContainerOutlined),
+        children: [
+          {
+            label: t('menu.data_server_dev'),
+            key: '/data-server/dev',
+            icon: renderIcon(ApartmentOutlined)
+          },
+          {
+            label: t('menu.data_server_agency'),
+            key: '/data-server/agency',
+            icon: renderIcon(BarsOutlined)
+          },
+          {
+            label: t('menu.data_server_monitor'),
+            key: '/data-server/monitor',
+            icon: renderIcon(BarsOutlined)
+          }
+        ]
+      },
+      {
+        label: () =>
           h(NEllipsis, null, { default: () => t('menu.datasource') }),
         key: 'datasource',
         icon: renderIcon(DatabaseOutlined),
@@ -282,9 +305,7 @@ export function useDataList() {
         label: () => h(NEllipsis, null, { default: () => t('menu.security') }),
         key: 'security',
         icon: renderIcon(SafetyCertificateOutlined),
-        children:
-          (userStore.getUserInfo as UserInfoRes).userType === 'ADMIN_USER'
-            ? [
+        children: (userStore.getUserInfo as UserInfoRes).userType === 'ADMIN_USER' ? [
                 {
                   label: t('menu.tenant_manage'),
                   key: '/security/tenant-manage',
@@ -335,9 +356,7 @@ export function useDataList() {
                   key: '/security/token-manage',
                   icon: renderIcon(SafetyOutlined)
                 }
-              ]
-            : [
-                {
+              ] : [{
                   label: t('menu.token_manage'),
                   key: '/security/token-manage',
                   icon: renderIcon(SafetyOutlined)

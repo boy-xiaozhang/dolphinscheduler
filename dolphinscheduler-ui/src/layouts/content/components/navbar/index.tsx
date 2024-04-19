@@ -83,18 +83,18 @@ const Navbar = defineComponent({
           />
         </div>
         <div class={styles.settings}>
-          <NButton quaternary onClick={this.handleUISettingClick}>
-            {{
-              icon: () => (
-                <NIcon size='16'>
-                  <SettingOutlined />
-                </NIcon>
-              ),
-              default: this.t('menu.ui_setting')
-            }}
-          </NButton>
-          <Theme />
-          <Locales localesOptions={this.localesOptions} />
+          {/*<NButton quaternary onClick={this.handleUISettingClick}>*/}
+          {/*  {{*/}
+          {/*    icon: () => (*/}
+          {/*      <NIcon size='16'>*/}
+          {/*        <SettingOutlined />*/}
+          {/*      </NIcon>*/}
+          {/*    ),*/}
+          {/*    default: this.t('menu.ui_setting')*/}
+          {/*  }}*/}
+          {/*</NButton>*/}
+          {/*<Theme />*/}
+          {/*<Locales localesOptions={this.localesOptions} />*/}
           <Timezone timezoneOptions={this.timezoneOptions} />
           <User userDropdownOptions={this.userDropdownOptions} />
         </div>

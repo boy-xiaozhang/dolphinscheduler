@@ -36,7 +36,7 @@ const App = defineComponent({
     const isRouterAlive = ref(true)
     const themeStore = useThemeStore()
     const currentTheme = computed(() =>
-      themeStore.darkTheme ? darkTheme : undefined
+        themeStore.darkTheme ? darkTheme : undefined
     )
     const localesStore = useLocalesStore()
     /*refresh page when router params change*/
@@ -58,22 +58,22 @@ const App = defineComponent({
   },
   render() {
     const themeOverrides: GlobalThemeOverrides =
-      themeList[this.currentTheme ? 'dark' : 'light']
+        themeList[this.currentTheme ? 'dark' : 'light']
 
     return (
-      <NConfigProvider
-        theme={this.currentTheme}
-        theme-overrides={themeOverrides}
-        style={{ width: '100%', height: '100vh' }}
-        date-locale={
-          String(this.localesStore.getLocales) === 'zh_CN' ? dateZhCN : dateEnUS
-        }
-        locale={String(this.localesStore.getLocales) === 'zh_CN' ? zhCN : enUS}
-      >
-        <NMessageProvider>
-          {this.isRouterAlive ? <router-view /> : ''}
-        </NMessageProvider>
-      </NConfigProvider>
+        <NConfigProvider
+            theme={this.currentTheme}
+            theme-overrides={themeOverrides}
+            style={{ width: '100%', height: '100vh' }}
+            date-locale={
+              String(this.localesStore.getLocales) === 'zh_CN' ? dateZhCN : dateEnUS
+            }
+            locale={String(this.localesStore.getLocales) === 'zh_CN' ? zhCN : enUS}
+        >
+          <NMessageProvider>
+            {this.isRouterAlive ? <router-view /> : ''}
+          </NMessageProvider>
+        </NConfigProvider>
     )
   }
 })

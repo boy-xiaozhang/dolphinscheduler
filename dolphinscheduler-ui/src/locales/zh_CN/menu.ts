@@ -16,7 +16,7 @@
  */
 
 export default {
-  home: '首页',
+  home: '工作台',
   project: '项目管理',
   resources: '资源中心',
   datasource: '源中心',
@@ -60,5 +60,11 @@ export default {
   task_group_queue: '任务组队列',
   data_quality: '数据质量',
   task_result: '任务结果',
-  rule: '规则管理'
+  rule: '规则管理',
+  //数据服务START
+  data_server: '数据服务',
+  data_server_dev: '服务开发',
+  data_server_agency: '应用管理',
+  data_server_monitor: '服务监控',
+  //数据服务END
 }

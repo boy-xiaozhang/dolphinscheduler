@@ -16,7 +16,7 @@
  */
 
 export default {
-  home: 'Home',
+  home: 'Workbench',
   project: 'Project',
   resources: 'Resources',
   datasource: 'Datasource',
@@ -60,5 +60,11 @@ export default {
   data_quality: 'Data Quality',
   task_result: 'Task Result',
   rule: 'Rule management',
-  ui_setting: 'UI Setting'
+  ui_setting: 'UI Setting',
+  //数据服务START
+  data_server: 'Data Server',
+  data_server_dev: 'Data Server Dev',
+  data_server_agency: 'Data Server Agency',
+  data_server_monitor: 'Data Server Monitor',
+  //数据服务END
 }

@@ -13,6 +13,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "noImplicitAny": false, // 是否在表达式和申明上有隐含的any类型时报错
     "skipLibCheck": true,
     "types": ["vite/client"],
     "plugins": [{ "name": "typescript-plugin-css-modules" }]

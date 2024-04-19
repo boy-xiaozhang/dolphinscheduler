@@ -24,6 +24,7 @@ import datasourcePage from './modules/datasource'
 import monitorPage from './modules/monitor'
 import securityPage from './modules/security'
 import dataQualityPage from './modules/data-quality'
+import dataServerPage from './modules/data-server'
 // todo: why is it throwing cannot find module and its corresponding type, but the render is working?
 import uiSettingPage from './modules/ui-setting'
 
@@ -38,7 +39,7 @@ const basePage: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: { name: 'home' },
-    meta: { title: '首页' },
+    meta: { title: '工作台' },
     component: () => import('@/layouts/content'),
     children: [
       {
@@ -46,7 +47,7 @@ const basePage: RouteRecordRaw[] = [
         name: 'home',
         component: components['home'],
         meta: {
-          title: '首页',
+          title: '工作台',
           activeMenu: 'home',
           auth: []
         }
@@ -77,6 +78,7 @@ const basePage: RouteRecordRaw[] = [
   monitorPage,
   securityPage,
   dataQualityPage,
+  dataServerPage,
   uiSettingPage
 ]
 

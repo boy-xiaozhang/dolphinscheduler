@@ -17,6 +17,7 @@
 
 import crontab from '@/locales/en_US/crontab'
 import data_quality from '@/locales/en_US/data-quality'
+import data_server from '@/locales/en_US/data-server'
 import datasource from '@/locales/en_US/datasource'
 import home from '@/locales/en_US/home'
 import input_search from '@/locales/en_US/input-search'
@@ -48,6 +49,7 @@ export default {
   security,
   datasource,
   data_quality,
+  data_server,
   crontab,
   ui_setting,
   input_search

@@ -49,20 +49,20 @@
                             <pnpmInheritsProxyConfigFromMaven>false</pnpmInheritsProxyConfigFromMaven>
                         </configuration>
                         <executions>
+<!--                            <execution>-->
+<!--                                <id>install node and pnpm</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>install-node-and-pnpm</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <nodeVersion>${node.version}</nodeVersion>-->
+<!--                                    <pnpmVersion>${pnpm.version}</pnpmVersion>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
                             <execution>
-                                <id>install node and pnpm</id>
+                                <id>npm install</id>
                                 <goals>
-                                    <goal>install-node-and-pnpm</goal>
-                                </goals>
-                                <configuration>
-                                    <nodeVersion>${node.version}</nodeVersion>
-                                    <pnpmVersion>${pnpm.version}</pnpmVersion>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>pnpm install</id>
-                                <goals>
-                                    <goal>pnpm</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
@@ -70,9 +70,9 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>pnpm run build:prod</id>
+                                <id>npm run build:prod</id>
                                 <goals>
-                                    <goal>pnpm</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <configuration>
                                     <arguments>run build:prod</arguments>

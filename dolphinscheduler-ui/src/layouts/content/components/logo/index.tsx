@@ -15,27 +15,22 @@
  * limitations under the License.
  */
 
-import { defineComponent } from 'vue'
-import { useThemeStore } from '@/store/theme/theme'
+import {defineComponent} from 'vue'
+import {useThemeStore} from '@/store/theme/theme'
 import styles from './index.module.scss'
 
 const Logo = defineComponent({
-  name: 'Logo',
-  setup() {
-    const themeStore = useThemeStore()
-
-    return { themeStore }
-  },
-  render() {
-    return (
-      <div
-        class={[
-          styles.logo,
-          styles[`logo-${this.themeStore.darkTheme ? 'dark' : 'light'}`]
-        ]}
-      />
-    )
-  }
+    name: 'Logo',
+    setup() {
+        const themeStore = useThemeStore()
+        const logoUrl = '../../../../assets/images/logo.png'
+        return {themeStore, logoUrl}
+    },
+    render() {
+        return (
+            <div><img class={styles.logo} src="/src/assets/images/logo.png"/></div>
+        )
+    }
 })
 
 export default Logo

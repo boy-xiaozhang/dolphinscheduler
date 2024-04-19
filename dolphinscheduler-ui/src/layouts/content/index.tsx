@@ -103,7 +103,7 @@ const Content = defineComponent({
   render() {
     return (
       <NLayout style='height: 100%'>
-        <NLayoutHeader style='height: 65px'>
+        <NLayoutHeader style='height: 51px'>
           <NavBar
             class='tab-horizontal'
             headerMenuOptions={this.headerMenuOptions}
@@ -112,7 +112,7 @@ const Content = defineComponent({
             userDropdownOptions={this.userDropdownOptions}
           />
         </NLayoutHeader>
-        <NLayout has-sider position='absolute' style='top: 65px'>
+        <NLayout has-sider position='absolute' style='top: 51px'>
           {this.isShowSide && (
             <SideBar
               sideMenuOptions={this.sideMenuOptions}
@@ -121,7 +121,7 @@ const Content = defineComponent({
           )}
           <NLayoutContent
             native-scrollbar={false}
-            style='padding: 16px 22px'
+            style='padding: 6px 12px'
             contentStyle={'height: 100%'}
           >
             <router-view key={this.currentRoute.fullPath} />

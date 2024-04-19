@@ -61,7 +61,6 @@ public class ApiApplicationServer {
     @EventListener
     public void run(ApplicationReadyEvent readyEvent) {
         log.info("Received spring application context ready event will load taskPlugin and write to DB");
-        // install task plugin
         taskPluginManager.loadPlugin();
         for (Map.Entry<String, TaskChannelFactory> entry : taskPluginManager.getTaskChannelFactoryMap().entrySet()) {
             String taskPluginName = entry.getKey();

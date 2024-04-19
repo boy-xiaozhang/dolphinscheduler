@@ -52,6 +52,7 @@ const Sidebar = defineComponent({
         bordered
         nativeScrollbar={false}
         show-trigger='bar'
+        width={200}
         collapse-mode='width'
         collapsed={this.collapsedRef}
         onCollapse={() => (this.collapsedRef = true)}
@@ -60,6 +61,7 @@ const Sidebar = defineComponent({
         <NMenu
           class='tab-vertical'
           value={this.sideKey}
+          indent={20}
           options={this.sideMenuOptions}
           defaultExpandedKeys={this.defaultExpandedKeys}
           onUpdateValue={this.handleMenuClick}
