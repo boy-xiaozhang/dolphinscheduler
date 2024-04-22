@@ -60,6 +60,18 @@ export default {
                 showSide: true,
                 auth: []
             }
-        }
+        },
+        {
+            path: '/data-server/:projectCode/dev/create',
+            name: 'data-server-create',
+            component: components['data-server-dev-create'],
+            meta: {
+                title: '创建数据服务',
+                activeMenu: 'data-server',
+                activeSide: '/data-server/:projectCode/dev',
+                showSide: true,
+                auth: []
+            }
+        },
     ]
 }

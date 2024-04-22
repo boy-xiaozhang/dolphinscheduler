@@ -33,24 +33,26 @@ import security from '@/locales/zh_CN/security'
 import theme from '@/locales/zh_CN/theme'
 import user_dropdown from '@/locales/zh_CN/user-dropdown'
 import ui_setting from '@/locales/zh_CN/ui_setting'
+import common_global from '@/locales/zh_CN/common'
 
 export default {
-  login,
-  modal,
-  theme,
-  user_dropdown,
-  menu,
-  home,
-  password,
-  profile,
-  monitor,
-  resource,
-  project,
-  security,
-  datasource,
-  data_quality,
-  data_server,
-  crontab,
-  ui_setting,
-  input_search
+    login,
+    modal,
+    theme,
+    user_dropdown,
+    menu,
+    home,
+    password,
+    profile,
+    monitor,
+    resource,
+    project,
+    security,
+    datasource,
+    data_quality,
+    data_server,
+    crontab,
+    ui_setting,
+    input_search,
+    common_global
 }

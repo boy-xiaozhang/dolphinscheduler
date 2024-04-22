@@ -26,7 +26,7 @@ export const COLUMN_WIDTH_CONFIG = {
     width: 50
   },
   index: {
-    width: 50
+    width: 80
   },
   linkName: {
     width: 200,
