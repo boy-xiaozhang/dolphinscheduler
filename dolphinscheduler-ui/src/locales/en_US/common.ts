@@ -5,7 +5,7 @@
  * @Description
  **/
 export default {
-    actions:'actions',
+    actions: 'actions',
     serial_number: 'serial_number',
     create_time: 'create_time',
     update_time: 'update_time',
@@ -13,7 +13,7 @@ export default {
     edit: 'edit',
     save: 'save',
     cancel: 'cancel',
-    test_run:'test run',
+    test_run: 'test run',
     formatter_code: 'formatter code',
     confirm: 'confirm',
     success: 'success',
@@ -23,5 +23,11 @@ export default {
     please_enter_name: 'please enter name',
     please_enter_description: 'please enter description',
     data_domain: 'data domain',
-    data_source:'data source'
+    data_source: 'data source',
+    desc: 'desc',
+    data_source_npe: 'datasource not support is null',
+    key_name: 'key',
+    value_name: 'value',
+    desc_name: 'desc',
+
 }

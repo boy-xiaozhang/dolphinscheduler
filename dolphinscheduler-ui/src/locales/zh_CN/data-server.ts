@@ -31,5 +31,11 @@ export default {
         no_release: '未发布'
     },
     monitor: {},
-    agency: {}
+    agency: {},
+    error: {
+        api_name_npe: '接口名称不能为空',
+        api_path_npe: '接口地址不能为空',
+        api_domain_npe: '接口数据域不能为空',
+        api_type_npe: '接口类型不能为空'
+    }
 }

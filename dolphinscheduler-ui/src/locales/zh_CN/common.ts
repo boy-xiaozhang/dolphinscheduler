@@ -23,5 +23,11 @@ export default {
     please_enter_name: '请输入名称',
     please_enter_description: '请输入描述',
     data_domain: '数据域',
-    data_source: '数据源'
+    data_source: '数据源',
+    desc: '描述',
+    data_source_npe: '数据源不能为空',
+    key_name: '名称',
+    value_name: '值',
+    desc_name: '描述',
+
 }
