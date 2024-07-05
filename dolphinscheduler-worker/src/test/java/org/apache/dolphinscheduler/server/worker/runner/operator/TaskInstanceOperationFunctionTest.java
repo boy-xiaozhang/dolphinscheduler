@@ -80,15 +80,15 @@ public class TaskInstanceOperationFunctionTest {
 
     @Test
     public void testTaskInstanceOperationFunctionManager() {
-        TaskInstanceKillOperationFunction taskInstanceKillOperationFunction = new TaskInstanceKillOperationFunction(
+        TaskInstanceKillOperationFunctionWorker taskInstanceKillOperationFunction = new TaskInstanceKillOperationFunctionWorker(
                 workerTaskExecutorThreadPool,
                 messageRetryRunner);
 
-        TaskInstancePauseOperationFunction taskInstancePauseOperationFunction =
-                new TaskInstancePauseOperationFunction();
+        TaskInstancePauseOperationFunctionWorker taskInstancePauseOperationFunction =
+                new TaskInstancePauseOperationFunctionWorker();
 
-        UpdateWorkflowHostOperationFunction updateWorkflowHostOperationFunction =
-                new UpdateWorkflowHostOperationFunction(
+        UpdateWorkflowHostOperationFunctionWorker updateWorkflowHostOperationFunction =
+                new UpdateWorkflowHostOperationFunctionWorker(
                         messageRetryRunner);
 
         WorkerTaskExecutorFactoryBuilder workerTaskExecutorFactoryBuilder = new WorkerTaskExecutorFactoryBuilder(
@@ -99,8 +99,8 @@ public class TaskInstanceOperationFunctionTest {
                 storageOperate,
                 workerRegistryClient);
 
-        TaskInstanceDispatchOperationFunction taskInstanceDispatchOperationFunction =
-                new TaskInstanceDispatchOperationFunction(
+        TaskInstanceDispatchOperationFunctionWorker taskInstanceDispatchOperationFunction =
+                new TaskInstanceDispatchOperationFunctionWorker(
                         workerConfig,
                         workerTaskExecutorFactoryBuilder,
                         workerTaskExecutorThreadPool);
@@ -124,8 +124,8 @@ public class TaskInstanceOperationFunctionTest {
 
     @Test
     public void testUpdateWorkflowHostOperationFunction() {
-        UpdateWorkflowHostOperationFunction updateWorkflowHostOperationFunction =
-                new UpdateWorkflowHostOperationFunction(
+        UpdateWorkflowHostOperationFunctionWorker updateWorkflowHostOperationFunction =
+                new UpdateWorkflowHostOperationFunctionWorker(
                         messageRetryRunner);
 
         try (MockedStatic<LogUtils> logUtilsMockedStatic = Mockito.mockStatic(LogUtils.class)) {
@@ -168,8 +168,8 @@ public class TaskInstanceOperationFunctionTest {
 
     @Test
     public void testTaskInstancePauseOperationFunction() {
-        TaskInstancePauseOperationFunction taskInstancePauseOperationFunction =
-                new TaskInstancePauseOperationFunction();
+        TaskInstancePauseOperationFunctionWorker taskInstancePauseOperationFunction =
+                new TaskInstancePauseOperationFunctionWorker();
 
         try (MockedStatic<LogUtils> logUtilsMockedStatic = Mockito.mockStatic(LogUtils.class)) {
             logUtilsMockedStatic
@@ -194,8 +194,8 @@ public class TaskInstanceOperationFunctionTest {
                 storageOperate,
                 workerRegistryClient);
 
-        TaskInstanceDispatchOperationFunction taskInstanceDispatchOperationFunction =
-                new TaskInstanceDispatchOperationFunction(
+        TaskInstanceDispatchOperationFunctionWorker taskInstanceDispatchOperationFunction =
+                new TaskInstanceDispatchOperationFunctionWorker(
                         workerConfig,
                         workerTaskExecutorFactoryBuilder,
                         workerTaskExecutorThreadPool);
@@ -220,7 +220,7 @@ public class TaskInstanceOperationFunctionTest {
 
     @Test
     public void testTaskInstanceKillOperationFunction() {
-        TaskInstanceKillOperationFunction taskInstanceKillOperationFunction = new TaskInstanceKillOperationFunction(
+        TaskInstanceKillOperationFunctionWorker taskInstanceKillOperationFunction = new TaskInstanceKillOperationFunctionWorker(
                 workerManager,
                 messageRetryRunner);
 

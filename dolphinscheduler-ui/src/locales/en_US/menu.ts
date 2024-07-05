@@ -21,7 +21,7 @@ export default {
   resources: 'Resources',
   datasource: 'Datasource',
   monitor: 'Monitor',
-  security: 'Security',
+  system: 'SystemManage',
   project_overview: 'Project Overview',
   project_parameter: 'Project Parameter',
   project_preferences: 'Project Preferences',
@@ -65,6 +65,10 @@ export default {
   data_server: 'Data Server',
   data_server_dev: 'Data Server Dev',
   data_server_agency: 'Data Server Agency',
-  data_server_monitor: 'Data Server Monitor'
+  data_server_monitor: 'Data Server Monitor',
   //数据服务END
+  //数据治理START
+  data_governance: 'Data Governance',
+  data_domain:'Data Domain'
+  //数据治理END
 }

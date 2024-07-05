@@ -17,25 +17,13 @@
 
 package org.apache.dolphinscheduler.api.controller.v2;
 
-import static org.apache.dolphinscheduler.api.enums.Status.CREATE_PROJECT_ERROR;
-import static org.apache.dolphinscheduler.api.enums.Status.DELETE_PROJECT_ERROR;
-import static org.apache.dolphinscheduler.api.enums.Status.LOGIN_USER_QUERY_PROJECT_LIST_PAGING_ERROR;
-import static org.apache.dolphinscheduler.api.enums.Status.QUERY_AUTHORIZED_AND_USER_CREATED_PROJECT_ERROR;
-import static org.apache.dolphinscheduler.api.enums.Status.QUERY_AUTHORIZED_PROJECT;
-import static org.apache.dolphinscheduler.api.enums.Status.QUERY_AUTHORIZED_USER;
-import static org.apache.dolphinscheduler.api.enums.Status.QUERY_PROJECT_DETAILS_BY_CODE_ERROR;
-import static org.apache.dolphinscheduler.api.enums.Status.QUERY_UNAUTHORIZED_PROJECT_ERROR;
-import static org.apache.dolphinscheduler.api.enums.Status.UPDATE_PROJECT_ERROR;
-
-import org.apache.dolphinscheduler.api.controller.BaseController;
-import org.apache.dolphinscheduler.api.dto.project.ProjectCreateRequest;
-import org.apache.dolphinscheduler.api.dto.project.ProjectCreateResponse;
-import org.apache.dolphinscheduler.api.dto.project.ProjectDeleteResponse;
-import org.apache.dolphinscheduler.api.dto.project.ProjectListResponse;
-import org.apache.dolphinscheduler.api.dto.project.ProjectQueryRequest;
-import org.apache.dolphinscheduler.api.dto.project.ProjectQueryResponse;
-import org.apache.dolphinscheduler.api.dto.project.ProjectUpdateRequest;
-import org.apache.dolphinscheduler.api.dto.project.ProjectUpdateResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.dolphinscheduler.api.base.controller.BaseController;
+import org.apache.dolphinscheduler.api.dto.project.*;
 import org.apache.dolphinscheduler.api.dto.user.UserListResponse;
 import org.apache.dolphinscheduler.api.exceptions.ApiException;
 import org.apache.dolphinscheduler.api.service.ProjectService;
@@ -45,26 +33,11 @@ import org.apache.dolphinscheduler.common.constants.Constants;
 import org.apache.dolphinscheduler.dao.entity.Project;
 import org.apache.dolphinscheduler.dao.entity.User;
 import org.apache.dolphinscheduler.plugin.task.api.utils.ParameterUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import static org.apache.dolphinscheduler.api.enums.Status.*;
 
 /**
  * project controller

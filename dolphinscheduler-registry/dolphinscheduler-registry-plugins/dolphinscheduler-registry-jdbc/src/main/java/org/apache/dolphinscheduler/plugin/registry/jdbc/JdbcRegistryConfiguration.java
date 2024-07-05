@@ -29,8 +29,10 @@ import org.springframework.context.annotation.Configuration;
 
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
+@Lazy
 @ConditionalOnProperty(prefix = "registry", name = "type", havingValue = "jdbc")
 public class JdbcRegistryConfiguration {
 

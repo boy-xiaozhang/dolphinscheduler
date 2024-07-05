@@ -345,7 +345,7 @@ public final class DateUtils {
      * format time to duration, if end date is null, use current time as end time
      *
      * @param start start
-     * @param end end
+     * @param end   end
      * @return format time
      */
     public static String format2Duration(Date start, Date end) {
@@ -601,6 +601,10 @@ public final class DateUtils {
         return getCurrentTime(DateConstants.YYYYMMDDHHMMSSSSS);
     }
 
+    public static LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.now();
+    }
+
     /**
      * transform date to target timezone date
      * sourceTimeZoneId is system default timezone
@@ -673,6 +677,7 @@ public final class DateUtils {
 
     /**
      * transform date to timeStamp
+     *
      * @param date date
      * @return time stamp (milliseconds)
      */
@@ -695,7 +700,7 @@ public final class DateUtils {
     }
 
     /**
-     * @param timeMillis timeMillis like System.currentTimeMillis()
+     * @param timeMillis        timeMillis like System.currentTimeMillis()
      * @param dateTimeFormatter expect formatter, like yyyy-MM-dd HH:mm:ss
      * @return formatted string
      */
@@ -708,7 +713,7 @@ public final class DateUtils {
     /**
      * get the formatted date string
      *
-     * @param date date
+     * @param date   date
      * @param format e.g. yyyy-MM-dd HH:mm:ss
      * @return date string
      */
@@ -719,7 +724,7 @@ public final class DateUtils {
     /**
      * convert string to date and time
      *
-     * @param date date
+     * @param date   date
      * @param format format
      * @return date
      */

@@ -24,41 +24,41 @@ import org.springframework.stereotype.Component;
 public class TaskInstanceOperationFunctionManager {
 
     @Autowired
-    private TaskInstanceKillOperationFunction taskInstanceKillOperationFunction;
+    private TaskInstanceKillOperationFunctionWorker taskInstanceKillOperationFunction;
 
     @Autowired
-    private UpdateWorkflowHostOperationFunction updateWorkflowHostOperationFunction;
+    private UpdateWorkflowHostOperationFunctionWorker updateWorkflowHostOperationFunction;
 
     @Autowired
-    private TaskInstanceDispatchOperationFunction taskInstanceDispatchOperationFunction;
+    private TaskInstanceDispatchOperationFunctionWorker taskInstanceDispatchOperationFunction;
 
     @Autowired
-    private TaskInstancePauseOperationFunction taskInstancePauseOperationFunction;
+    private TaskInstancePauseOperationFunctionWorker taskInstancePauseOperationFunction;
 
     public TaskInstanceOperationFunctionManager(
-                                                TaskInstanceKillOperationFunction taskInstanceKillOperationFunction,
-                                                UpdateWorkflowHostOperationFunction updateWorkflowHostOperationFunction,
-                                                TaskInstanceDispatchOperationFunction taskInstanceDispatchOperationFunction,
-                                                TaskInstancePauseOperationFunction taskInstancePauseOperationFunction) {
+                                                TaskInstanceKillOperationFunctionWorker taskInstanceKillOperationFunction,
+                                                UpdateWorkflowHostOperationFunctionWorker updateWorkflowHostOperationFunction,
+                                                TaskInstanceDispatchOperationFunctionWorker taskInstanceDispatchOperationFunction,
+                                                TaskInstancePauseOperationFunctionWorker taskInstancePauseOperationFunction) {
         this.taskInstanceKillOperationFunction = taskInstanceKillOperationFunction;
         this.updateWorkflowHostOperationFunction = updateWorkflowHostOperationFunction;
         this.taskInstanceDispatchOperationFunction = taskInstanceDispatchOperationFunction;
         this.taskInstancePauseOperationFunction = taskInstancePauseOperationFunction;
     }
 
-    public TaskInstanceKillOperationFunction getTaskInstanceKillOperationFunction() {
+    public TaskInstanceKillOperationFunctionWorker getTaskInstanceKillOperationFunction() {
         return taskInstanceKillOperationFunction;
     }
 
-    public UpdateWorkflowHostOperationFunction getUpdateWorkflowHostOperationFunction() {
+    public UpdateWorkflowHostOperationFunctionWorker getUpdateWorkflowHostOperationFunction() {
         return updateWorkflowHostOperationFunction;
     }
 
-    public TaskInstanceDispatchOperationFunction getTaskInstanceDispatchOperationFunction() {
+    public TaskInstanceDispatchOperationFunctionWorker getTaskInstanceDispatchOperationFunction() {
         return taskInstanceDispatchOperationFunction;
     }
 
-    public TaskInstancePauseOperationFunction getTaskInstancePauseOperationFunction() {
+    public TaskInstancePauseOperationFunctionWorker getTaskInstancePauseOperationFunction() {
         return taskInstancePauseOperationFunction;
     }
 

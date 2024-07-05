@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.apache.dolphinscheduler.dataserver.dev.pojo.entity.dao.DataServerMapper">
+
+    <resultMap id="BaseResultMap"
+               type="org.apache.dolphinscheduler.dataserver.dev.pojo.entity.entity.DmcDataServerInfo">
+        <!--@Table dmc_data_server_info-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="dataDomain" column="data_domain" jdbcType="INTEGER"/>
+        <result property="securityLevel" column="security_level" jdbcType="INTEGER"/>
+        <result property="projectCode" column="project_code" jdbcType="INTEGER"/>
+        <result property="method" column="method" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="serverType" column="server_type" jdbcType="INTEGER"/>
+        <result property="serverName" column="server_name" jdbcType="VARCHAR"/>
+        <result property="datasource" column="datasource" jdbcType="INTEGER"/>
+        <result property="script" column="script" jdbcType="VARCHAR"/>
+        <result property="params" column="params" jdbcType="VARCHAR"/>
+        <result property="headers" column="headers" jdbcType="VARCHAR"/>
+        <result property="bodyJson" column="body_json" jdbcType="VARCHAR"/>
+        <result property="nodeId" column="node_id" jdbcType="INTEGER"/>
+        <result property="fullPath" column="full_path" jdbcType="VARCHAR"/>
+        <result property="createAuthor" column="create_author" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="updateAuthor" column="update_author" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select id,
+               data_domain,
+               security_level,
+               project_code,
+               method,
+               path,
+               server_type,
+               server_name,
+               datasource,
+               script,
+               params,
+               headers,
+               body_json,
+               node_id,
+               full_path,
+               create_author,
+               create_time,
+               update_author,
+               update_time
+        from dmc_data_server_info
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+        id, data_domain, security_level, project_code, method, path, server_type, server_name, datasource, script,
+        params, headers, body_json, node_id, full_path, create_author, create_time, update_author, update_time
+        from dmc_data_server_info
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="dataDomain != null">
+                and data_domain = #{dataDomain}
+            </if>
+            <if test="securityLevel != null">
+                and security_level = #{securityLevel}
+            </if>
+            <if test="projectCode != null">
+                and project_code = #{projectCode}
+            </if>
+            <if test="method != null and method != ''">
+                and method = #{method}
+            </if>
+            <if test="path != null and path != ''">
+                and path = #{path}
+            </if>
+            <if test="serverType != null">
+                and server_type = #{serverType}
+            </if>
+            <if test="serverName != null and serverName != ''">
+                and server_name = #{serverName}
+            </if>
+            <if test="datasource != null">
+                and datasource = #{datasource}
+            </if>
+            <if test="script != null and script != ''">
+                and script = #{script}
+            </if>
+            <if test="params != null and params != ''">
+                and params = #{params}
+            </if>
+            <if test="headers != null and headers != ''">
+                and headers = #{headers}
+            </if>
+            <if test="bodyJson != null and bodyJson != ''">
+                and body_json = #{bodyJson}
+            </if>
+            <if test="nodeId != null">
+                and node_id = #{nodeId}
+            </if>
+            <if test="fullPath != null and fullPath != ''">
+                and full_path = #{fullPath}
+            </if>
+            <if test="createAuthor != null">
+                and create_author = #{createAuthor}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateAuthor != null">
+                and update_author = #{updateAuthor}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+    select
+    id, data_domain, security_level, project_code, method, path, server_type, server_name, datasource, script, params,
+    headers, body_json, node_id, full_path, create_author, create_time, update_author, update_time
+    from dolphinscheduler.dmc_data_server_info
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from dmc_data_server_info
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="dataDomain != null">
+                and data_domain = #{dataDomain}
+            </if>
+            <if test="securityLevel != null">
+                and security_level = #{securityLevel}
+            </if>
+            <if test="projectCode != null">
+                and project_code = #{projectCode}
+            </if>
+            <if test="method != null and method != ''">
+                and method = #{method}
+            </if>
+            <if test="path != null and path != ''">
+                and path = #{path}
+            </if>
+            <if test="serverType != null">
+                and server_type = #{serverType}
+            </if>
+            <if test="serverName != null and serverName != ''">
+                and server_name = #{serverName}
+            </if>
+            <if test="datasource != null">
+                and datasource = #{datasource}
+            </if>
+            <if test="script != null and script != ''">
+                and script = #{script}
+            </if>
+            <if test="params != null and params != ''">
+                and params = #{params}
+            </if>
+            <if test="headers != null and headers != ''">
+                and headers = #{headers}
+            </if>
+            <if test="bodyJson != null and bodyJson != ''">
+                and body_json = #{bodyJson}
+            </if>
+            <if test="nodeId != null">
+                and node_id = #{nodeId}
+            </if>
+            <if test="fullPath != null and fullPath != ''">
+                and full_path = #{fullPath}
+            </if>
+            <if test="createAuthor != null">
+                and create_author = #{createAuthor}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateAuthor != null">
+                and update_author = #{updateAuthor}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into dmc_data_server_info(data_domain, security_level, project_code, method, path, server_type,
+                                         server_name, datasource, script, params, headers, body_json, node_id,
+                                         full_path, create_author, create_time, update_author, update_time)
+        values (#{dataDomain}, #{securityLevel}, #{projectCode}, #{method}, #{path}, #{serverType}, #{serverName},
+                #{datasource}, #{script}, #{params}, #{headers}, #{bodyJson}, #{nodeId}, #{fullPath}, #{createAuthor},
+                #{createTime}, #{updateAuthor}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into dmc_data_server_info(data_domain, security_level, project_code, method, path, server_type,
+        server_name, datasource, script, params, headers, body_json, node_id, full_path, create_author, create_time,
+        update_author, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.dataDomain}, #{entity.securityLevel}, #{entity.projectCode}, #{entity.method}, #{entity.path},
+            #{entity.serverType}, #{entity.serverName}, #{entity.datasource}, #{entity.script}, #{entity.params},
+            #{entity.headers}, #{entity.bodyJson}, #{entity.nodeId}, #{entity.fullPath}, #{entity.createAuthor},
+            #{entity.createTime}, #{entity.updateAuthor}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into dmc_data_server_info(data_domain, security_level, project_code, method, path, server_type,
+        server_name, datasource, script, params, headers, body_json, node_id, full_path, create_author, create_time,
+        update_author, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.dataDomain}, #{entity.securityLevel}, #{entity.projectCode}, #{entity.method}, #{entity.path},
+            #{entity.serverType}, #{entity.serverName}, #{entity.datasource}, #{entity.script}, #{entity.params},
+            #{entity.headers}, #{entity.bodyJson}, #{entity.nodeId}, #{entity.fullPath}, #{entity.createAuthor},
+            #{entity.createTime}, #{entity.updateAuthor}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        data_domain = values(data_domain),
+        security_level = values(security_level),
+        project_code = values(project_code),
+        method = values(method),
+        path = values(path),
+        server_type = values(server_type),
+        server_name = values(server_name),
+        datasource = values(datasource),
+        script = values(script),
+        params = values(params),
+        headers = values(headers),
+        body_json = values(body_json),
+        node_id = values(node_id),
+        full_path = values(full_path),
+        create_author = values(create_author),
+        create_time = values(create_time),
+        update_author = values(update_author),
+        update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update dmc_data_server_info
+        <set>
+            <if test="dataDomain != null">
+                data_domain = #{dataDomain},
+            </if>
+            <if test="securityLevel != null">
+                security_level = #{securityLevel},
+            </if>
+            <if test="projectCode != null">
+                project_code = #{projectCode},
+            </if>
+            <if test="method != null and method != ''">
+                method = #{method},
+            </if>
+            <if test="path != null and path != ''">
+                path = #{path},
+            </if>
+            <if test="serverType != null">
+                server_type = #{serverType},
+            </if>
+            <if test="serverName != null and serverName != ''">
+                server_name = #{serverName},
+            </if>
+            <if test="datasource != null">
+                datasource = #{datasource},
+            </if>
+            <if test="script != null and script != ''">
+                script = #{script},
+            </if>
+            <if test="params != null and params != ''">
+                params = #{params},
+            </if>
+            <if test="headers != null and headers != ''">
+                headers = #{headers},
+            </if>
+            <if test="bodyJson != null and bodyJson != ''">
+                body_json = #{bodyJson},
+            </if>
+            <if test="nodeId != null">
+                node_id = #{nodeId},
+            </if>
+            <if test="fullPath != null and fullPath != ''">
+                full_path = #{fullPath},
+            </if>
+            <if test="createAuthor != null">
+                create_author = #{createAuthor},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime},
+            </if>
+            <if test="updateAuthor != null">
+                update_author = #{updateAuthor},
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from dmc_data_server_info
+        where id = #{id}
+    </delete>
+
+</mapper>
+

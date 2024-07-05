@@ -38,11 +38,15 @@ import org.springframework.context.annotation.Configuration;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan({"org.apache.dolphinscheduler.dao.plugin"})
-@MapperScan(basePackages = "org.apache.dolphinscheduler.dao.mapper", sqlSessionFactoryRef = "sqlSessionFactory")
+@MapperScan(basePackages = {"org.apache.dolphinscheduler.dao.mapper",
+        "org.apache.dolphinscheduler.govern.*.mapper",
+        "org.apache.dolphinscheduler.apiserver.*.mapper"
+}, sqlSessionFactoryRef = "sqlSessionFactory")
 public class DaoConfiguration {
 
     /**
@@ -54,7 +58,7 @@ public class DaoConfiguration {
     /**
      * Inject this field to make sure the DaoPluginConfiguration is initialized before SpringConnectionFactory.
      */
-    @Autowired
+    @Autowired(required = false)
     public DaoPluginConfiguration daoPluginConfiguration;
 
     @Bean

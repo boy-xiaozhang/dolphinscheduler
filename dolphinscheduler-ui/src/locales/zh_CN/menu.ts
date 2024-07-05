@@ -19,9 +19,9 @@ export default {
   home: '工作台',
   project: '项目管理',
   resources: '资源中心',
-  datasource: '源中心',
+  datasource: '数据源管理',
   monitor: '监控中心',
-  security: '安全中心',
+  system: '系统管理',
   ui_setting: '界面设置',
   project_overview: '项目概览',
   project_parameter: '项目级别参数',
@@ -67,4 +67,9 @@ export default {
   data_server_agency: '应用管理',
   data_server_monitor: '服务监控',
   //数据服务END
+
+  //数据治理START
+  data_governance: '数据治理',
+  data_domain:'数据域',
+  //数据治理END
 }

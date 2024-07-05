@@ -15,16 +15,18 @@
  * limitations under the License.
  */
 
-import type { RouteRecordRaw } from 'vue-router'
-import type { Component } from 'vue'
+import type {RouteRecordRaw} from 'vue-router'
+import type {Component} from 'vue'
 import utils from '@/utils'
 import projectsPage from './modules/projects'
 import resourcesPage from './modules/resources'
 import datasourcePage from './modules/datasource'
 import monitorPage from './modules/monitor'
-import securityPage from './modules/security'
+import systemPage from './modules/system'
 import dataQualityPage from './modules/data-quality'
 import dataServerPage from './modules/data-server'
+import dataGovernPage from './modules/data-govern'
+
 // todo: why is it throwing cannot find module and its corresponding type, but the render is working?
 import uiSettingPage from './modules/ui-setting'
 
@@ -36,64 +38,65 @@ const components: { [key: string]: Component } = utils.mapping(modules)
  * Basic page
  */
 const basePage: RouteRecordRaw[] = [
-  {
-    path: '/',
-    redirect: { name: 'home' },
-    meta: { title: '工作台' },
-    component: () => import('@/layouts/content'),
-    children: [
-      {
-        path: '/home',
-        name: 'home',
-        component: components['home'],
-        meta: {
-          title: '工作台',
-          activeMenu: 'home',
-          auth: []
-        }
-      },
-      {
-        path: '/password',
-        name: 'password',
-        component: components['password'],
-        meta: {
-          title: '修改密码',
-          auth: []
-        }
-      },
-      {
-        path: '/profile',
-        name: 'profile',
-        component: components['profile'],
-        meta: {
-          title: '用户信息',
-          auth: []
-        }
-      }
-    ]
-  },
-  projectsPage,
-  resourcesPage,
-  datasourcePage,
-  monitorPage,
-  securityPage,
-  dataQualityPage,
-  dataServerPage,
-  uiSettingPage
+    {
+        path: '/',
+        redirect: {name: 'home'},
+        meta: {title: '工作台'},
+        component: () => import('@/layouts/content'),
+        children: [
+            {
+                path: '/home',
+                name: 'home',
+                component: components['home'],
+                meta: {
+                    title: '工作台',
+                    activeMenu: 'home',
+                    auth: []
+                }
+            },
+            {
+                path: '/password',
+                name: 'password',
+                component: components['password'],
+                meta: {
+                    title: '修改密码',
+                    auth: []
+                }
+            },
+            {
+                path: '/profile',
+                name: 'profile',
+                component: components['profile'],
+                meta: {
+                    title: '用户信息',
+                    auth: []
+                }
+            }
+        ]
+    },
+    projectsPage,
+    resourcesPage,
+    datasourcePage,
+    monitorPage,
+    systemPage,
+    dataQualityPage,
+    dataServerPage,
+    dataGovernPage,
+    uiSettingPage,
 ]
 
 /**
  * Login page
  */
 const loginPage: RouteRecordRaw[] = [
-  {
-    path: '/login',
-    name: 'login',
-    component: components['login'],
-    meta: {
-      auth: []
+    {
+        path: '/login',
+        name: 'login',
+        component: components['login'],
+        meta: {
+            auth: []
+        }
     }
-  }
 ]
 
 const routes: RouteRecordRaw[] = [...basePage, ...loginPage]

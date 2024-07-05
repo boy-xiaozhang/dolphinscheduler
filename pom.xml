@@ -18,19 +18,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.apache</groupId>
-        <artifactId>apache</artifactId>
-        <version>25</version>
-    </parent>
     <groupId>org.apache.dolphinscheduler</groupId>
     <artifactId>dolphinscheduler</artifactId>
     <version>dev-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>Dolphin Scheduler is a distributed and easy-to-expand visual DAG workflow scheduling system, dedicated
-        to solving the complex dependencies in data processing, making the scheduling system out of the box for data
-        processing.</description>
+    <description>lark dmc server.</description>
 
     <modules>
         <module>dolphinscheduler-bom</module>
@@ -57,13 +50,14 @@
         <module>dolphinscheduler-storage-plugin</module>
         <module>dolphinscheduler-extract</module>
         <module>dolphinscheduler-dao-plugin</module>
+        <module>dolphinscheduler-api-plugin</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring.boot.version>2.6.1</spring.boot.version>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <junit.version>5.9.0</junit.version>
         <mockito.version>3.12.4</mockito.version>
         <spotbugs.version>3.1.12</spotbugs.version>
@@ -117,6 +111,21 @@
             <dependency>
                 <groupId>org.apache.dolphinscheduler</groupId>
                 <artifactId>dolphinscheduler-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dolphinscheduler</groupId>
+                <artifactId>dolphinscheduler-api-plugin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dolphinscheduler</groupId>
+                <artifactId>dolphinscheduler-api-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dolphinscheduler</groupId>
+                <artifactId>dolphinscheduler-data-govern-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -377,12 +386,12 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>rpm-maven-plugin</artifactId>
-                    <version>${rpm-maven-plugion.version}</version>
-                    <inherited>false</inherited>
-                </plugin>
+                <!--                <plugin>-->
+                <!--                    <groupId>org.codehaus.mojo</groupId>-->
+                <!--                    <artifactId>rpm-maven-plugin</artifactId>-->
+                <!--                    <version>${rpm-maven-plugion.version}</version>-->
+                <!--                    <inherited>false</inherited>-->
+                <!--                </plugin>-->
 
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -689,9 +698,10 @@
                     <skip>${spotless.skip}</skip>
                     <java>
                         <eclipse>
-                            <file>${maven.multiModuleProjectDirectory}/style/spotless_dolphinscheduler_formatter.xml</file>
+                            <file>${maven.multiModuleProjectDirectory}/style/spotless_dolphinscheduler_formatter.xml
+                            </file>
                         </eclipse>
-                        <removeUnusedImports />
+                        <removeUnusedImports/>
                         <importOrder>
                             <file>${maven.multiModuleProjectDirectory}/style/eclipse.importorder</file>
                         </importOrder>
@@ -743,7 +753,7 @@
                         <excludes>
                             <exclude>**/.github/**/*.md</exclude>
                         </excludes>
-                        <flexmark />
+                        <flexmark/>
                     </markdown>
                     <upToDateChecking>
                         <enabled>true</enabled>
@@ -763,7 +773,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura-maven-plugin.version}</version>
                 <configuration>
-                    <check />
+                    <check/>
                     <aggregate>true</aggregate>
                     <outputDirectory>./target/cobertura</outputDirectory>
                     <encoding>${project.build.sourceEncoding}</encoding>
@@ -802,7 +812,8 @@
                                 <!-- Static code analysis tools like (maven-dependency-plugin) can not detect runtime dependencies, so you should instruct them about runtime dependencies -->
                                 <!-- https://stackoverflow.com/questions/37528928/spring-boot-core-dependencies-seen-as-unused-by-maven-dependency-plugin -->
                                 <ignoredDependency>org.springframework*:*</ignoredDependency>
-                                <ignoredDependency>org.apache.dolphinscheduler:dolphinscheduler-meter</ignoredDependency>
+                                <ignoredDependency>org.apache.dolphinscheduler:dolphinscheduler-meter
+                                </ignoredDependency>
                             </ignoredDependencies>
                             <ignoreNonCompile>true</ignoreNonCompile>
                         </configuration>
